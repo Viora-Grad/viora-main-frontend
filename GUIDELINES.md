@@ -1,5 +1,3 @@
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
-
 ## TypeScript Best Practices
 
 - Use strict type checking
@@ -15,6 +13,8 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Always declare access modifiers (`public`, `private`, `protected`) for class members even when they are public by default
 
 ## Angular Best Practices
+
+Following Angular best practices [Angular Style Guides](https://angular.dev/style-guide)
 
 - Always use suffixes like `Component`, `Directive`, or `Service` in the class name.
 - Always use standalone components over NgModules
@@ -37,21 +37,21 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use `ngStyle`, use `style` bindings instead
 - When using external templates/styles, use paths relative to the component TS file.
 
-## State Management
+### State Management
 
 - Use signals for local component state
 - Use `computed()` for derived state
 - Keep state transformations pure and predictable
 - Do NOT use `mutate` on signals, use `update` or `set` instead
 
-## Templates
+### Templates
 
 - Keep templates simple and avoid complex logic
 - Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
 - Use the async pipe to handle observables
 - Do not assume globals like (`new Date()`) are available.
 
-## Services
+### Services
 
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
