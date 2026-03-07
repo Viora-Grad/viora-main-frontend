@@ -67,7 +67,7 @@ module.exports = defineConfig([
 
 				{
 					selector: 'property',
-					format: ['camelCase'],
+					format: ['camelCase', 'number'],
 					leadingUnderscore: 'allow',
 				},
 			],
