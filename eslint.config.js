@@ -60,6 +60,13 @@ module.exports = defineConfig([
 
 				{
 					selector: 'property',
+					modifiers: ['private'],
+					format: ['camelCase'],
+					leadingUnderscore: 'require',
+				},
+
+				{
+					selector: 'property',
 					format: ['camelCase'],
 					leadingUnderscore: 'allow',
 				},
@@ -73,11 +80,36 @@ module.exports = defineConfig([
 			'@angular-eslint/directive-class-suffix': ['error', { suffixes: ['Directive'] }],
 
 			'@angular-eslint/prefer-on-push-component-change-detection': 'error',
+
+			'@angular-eslint/prefer-signals': 'error',
+
+			'@angular-eslint/prefer-inject': 'error',
+
+			'@angular-eslint/prefer-output-emitter-ref': 'error',
+
+			'@angular-eslint/prefer-standalone': 'error',
+
+			'@angular-eslint/prefer-host-metadata-property': 'error',
+
+			'@angular-eslint/use-injectable-provided-in': 'error',
+
+			'@angular-eslint/no-uncalled-signals': 'error',
+
+			'@angular-eslint/computed-must-return': 'error',
 		},
 	},
 	{
 		files: ['**/*.html'],
 		extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-		rules: {},
+		rules: {
+			'@angular-eslint/template/prefer-control-flow': 'error',
+			'@angular-eslint/template/prefer-self-closing-tags': 'error',
+			'@angular-eslint/template/prefer-ngsrc': 'error',
+			'@angular-eslint/template/no-negated-async': 'error',
+			'@angular-eslint/template/button-has-type': 'error',
+			'@angular-eslint/template/no-inline-styles': 'error',
+			'@angular-eslint/template/eqeqeq': 'error',
+			'@angular-eslint/template/no-duplicate-attributes': 'error',
+		},
 	},
 ]);
