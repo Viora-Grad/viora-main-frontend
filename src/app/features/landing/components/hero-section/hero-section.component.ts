@@ -18,6 +18,7 @@ import { MessageModule } from 'primeng/message';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroSectionComponent {
+	public readonly info = input('AI-Powered');
 	public readonly title = input('Landing Hero Title');
 	public readonly description = input('Landing hero supporting text goes here.');
 	public readonly ctaLabel = input('Get Started');
