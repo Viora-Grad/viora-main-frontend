@@ -23,4 +23,29 @@ describe('LandingPage', () => {
 		const nativeElement = fixture.nativeElement as HTMLElement;
 		expect(nativeElement.querySelector('app-hero-section')).not.toBeNull();
 	});
+
+	it('should render pain points section', () => {
+		const nativeElement = fixture.nativeElement as HTMLElement;
+		expect(nativeElement.querySelector('app-pain-points-section')).not.toBeNull();
+	});
+
+	it('should render platform features section', () => {
+		const nativeElement = fixture.nativeElement as HTMLElement;
+		expect(nativeElement.querySelector('app-platform-features-section')).not.toBeNull();
+	});
+
+	it('should render setup steps section', () => {
+		const nativeElement = fixture.nativeElement as HTMLElement;
+		expect(nativeElement.querySelector('app-setup-steps-section')).not.toBeNull();
+	});
+
+	it('should render ai marketing section', () => {
+		const nativeElement = fixture.nativeElement as HTMLElement;
+		expect(nativeElement.querySelector('app-ai-marketing-section')).not.toBeNull();
+	});
+
+	it('should render why choose section', () => {
+		const nativeElement = fixture.nativeElement as HTMLElement;
+		expect(nativeElement.querySelector('app-why-choose-section')).not.toBeNull();
+	});
 });

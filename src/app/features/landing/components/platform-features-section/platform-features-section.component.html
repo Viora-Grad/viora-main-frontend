@@ -1,0 +1,29 @@
+<section class="bg-surface-0 py-16 sm:py-20">
+	<div class="mx-auto w-full max-w-6xl px-6 sm:px-10">
+		<div class="space-y-10 py-2 sm:py-4">
+			<header class="mx-auto max-w-4xl text-center">
+				<h2 class="text-balance text-3xl font-semibold leading-tight sm:text-4xl text-primary">
+					{{ title }}
+				</h2>
+			</header>
+
+			<div class="grid gap-x-8 gap-y-8 lg:grid-cols-3">
+				@for (feature of features; track $index) {
+					<article class="flex items-start gap-4">
+						<div>
+							<p-avatar [icon]="feature.icon" size="large" />
+						</div>
+						<div class="space-y-2">
+							<h3 class="text-xl font-semibold leading-tight">
+								{{ feature.title }}
+							</h3>
+							<p class="text-base leading-relaxed text-muted-color">
+								{{ feature.description }}
+							</p>
+						</div>
+					</article>
+				}
+			</div>
+		</div>
+	</div>
+</section>
