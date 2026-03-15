@@ -14,7 +14,7 @@
 				preload="auto"
 				aria-hidden="true"
 			>
-				<source [src]="videoSrc()" type="video/mp4" />
+				<source src="videos/preview.mp4" type="video/mp4" />
 			</video>
 		</div>
 		<div
@@ -27,19 +27,23 @@
 	>
 		<div class="space-y-6 lg:col-span-2">
 			<div class="flex flex-wrap items-center gap-3">
-				<p-message severity="info" variant="outlined" styleClass="w-fit">{{ info() }}</p-message>
+				@for (tag of tags; track $index) {
+					<p-message severity="info" variant="outlined" [icon]="tag.icon" styleClass="w-fit">
+						{{ tag.label }}
+					</p-message>
+				}
 			</div>
 			<h1
 				class="text-balance text-3xl font-semibold leading-tight text-surface-0 sm:text-4xl lg:text-5xl"
 			>
-				{{ title() }}
+				{{ title }}
 			</h1>
 			<p class="max-w-xl text-base leading-relaxed text-surface-200 sm:text-lg">
-				{{ description() }}
+				{{ description }}
 			</p>
 			<div class="flex flex-wrap items-center gap-3">
 				<p-button
-					[label]="ctaLabel()"
+					label="Get Started"
 					icon="pi pi-arrow-right"
 					iconPos="right"
 					size="large"
@@ -48,7 +52,7 @@
 					styleClass="!bg-surface-0 !border-surface-0 !text-primary-700 hover:!bg-surface-100"
 				/>
 				<p-button
-					[label]="secondaryCtaLabel()"
+					label="See Pricing"
 					size="large"
 					variant="outlined"
 					[rounded]="true"
