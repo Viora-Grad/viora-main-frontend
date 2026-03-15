@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 
-type PainPoint = {
+interface PainPoint {
 	icon: string;
 	title: string;
 	description: string;
-};
+}
 
 @Component({
 	selector: 'app-pain-points-section',

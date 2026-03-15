@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AvatarModule } from 'primeng/avatar';
 
-type SetupStep = {
+interface SetupStep {
 	step: string;
 	title: string;
 	description: string;
-};
+}
 
 @Component({
 	selector: 'app-setup-steps-section',

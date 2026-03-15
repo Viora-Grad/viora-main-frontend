@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 
-type PlatformFeature = {
+interface PlatformFeature {
 	icon: string;
 	title: string;
 	description: string;
-};
+}
 
 @Component({
 	selector: 'app-platform-features-section',

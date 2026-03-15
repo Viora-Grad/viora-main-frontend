@@ -3,11 +3,11 @@ import { PrimeIcons } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 
-type Tag = {
+interface Tag {
 	icon: string;
 	label: string;
 	severity: 'info' | 'success' | 'warn' | 'error' | 'secondary' | 'contrast';
-};
+}
 
 @Component({
 	selector: 'app-hero-section',

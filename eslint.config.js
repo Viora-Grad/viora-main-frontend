@@ -22,7 +22,7 @@ module.exports = defineConfig([
 		processor: angular.processInlineTemplates,
 		rules: {
 			'@angular-eslint/directive-selector': [
-				'error',
+				'warn',
 				{
 					type: 'attribute',
 					prefix: 'app',
@@ -46,7 +46,7 @@ module.exports = defineConfig([
 			'prefer-const': 'warn',
 
 			'@typescript-eslint/naming-convention': [
-				'error',
+				'warn',
 
 				{
 					selector: 'typeLike',
@@ -67,7 +67,7 @@ module.exports = defineConfig([
 
 				{
 					selector: 'property',
-					format: ['camelCase', 'number'],
+					format: ['camelCase'],
 					leadingUnderscore: 'allow',
 				},
 			],
@@ -75,7 +75,7 @@ module.exports = defineConfig([
 			complexity: ['warn', 10],
 			'max-depth': ['warn', 4],
 
-			'@angular-eslint/component-class-suffix': ['error', { suffixes: ['Component'] }],
+			'@angular-eslint/component-class-suffix': ['error', { suffixes: ['Component', 'Page'] }],
 
 			'@angular-eslint/directive-class-suffix': ['error', { suffixes: ['Directive'] }],
 

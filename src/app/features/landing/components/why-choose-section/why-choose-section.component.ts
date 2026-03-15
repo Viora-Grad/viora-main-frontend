@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 
-type WhyChooseItem = {
+interface WhyChooseItem {
 	icon: string;
 	title: string;
 	description: string;
 	badgeClass: string;
-};
+}
 
 @Component({
 	selector: 'app-why-choose-section',

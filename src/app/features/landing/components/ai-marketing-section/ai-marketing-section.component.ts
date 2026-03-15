@@ -5,10 +5,10 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 
-type MarketingPoint = {
+interface MarketingPoint {
 	icon: string;
 	label: string;
-};
+}
 
 @Component({
 	selector: 'app-ai-marketing-section',
@@ -18,11 +18,11 @@ type MarketingPoint = {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AiMarketingSectionComponent {
-	private readonly aiName = 'ViVi';
+	private readonly _aiName = 'ViVi';
 
-	public readonly title = `Meet ${this.aiName} — Your AI Marketing Assistant for Clinics`;
+	public readonly title = `Meet ${this._aiName} — Your AI Marketing Assistant for Clinics`;
 
-	public readonly description = `Let ${this.aiName} handle your growth while you focus on care. ${this.aiName} writes, schedules, and optimizes your clinic's presence across the web.`;
+	public readonly description = `Let ${this._aiName} handle your growth while you focus on care. ${this._aiName} writes, schedules, and optimizes your clinic's presence across the web.`;
 
 	public readonly featureTag = 'New Feature';
 
