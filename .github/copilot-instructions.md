@@ -5,7 +5,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use strict type checking
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
-- Use `interface` for public APIs and `type` for internal types
+- Use `interface` for types
 - Use `readonly` for properties that should not be modified after initialization
 - Avoid using `var`; use `let` and `const` instead
 - Use PascalCase for types and interfaces

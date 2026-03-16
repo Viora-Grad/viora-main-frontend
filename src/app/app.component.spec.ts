@@ -3,6 +3,25 @@ import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
 	beforeEach(async () => {
+		window.matchMedia ??= ((query: string) => ({
+			matches: false,
+			media: query,
+			onchange: null,
+			addListener: () => {
+				/* noop */
+			},
+			removeListener: () => {
+				/* noop */
+			},
+			addEventListener: () => {
+				/* noop */
+			},
+			removeEventListener: () => {
+				/* noop */
+			},
+			dispatchEvent: () => false,
+		})) as typeof window.matchMedia;
+
 		await TestBed.configureTestingModule({
 			imports: [AppComponent],
 		}).compileComponents();

@@ -1,0 +1,51 @@
+<section class="bg-surface-100 py-10 sm:py-14">
+	<div class="mx-auto w-full max-w-7xl px-6 sm:px-10">
+		<div
+			class="rounded-3xl bg-linear-to-r from-primary via-primary to-surface-950 p-6 sm:p-10 lg:p-12"
+		>
+			<div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+				<div class="space-y-6">
+					<p-tag icon="pi pi-bolt" [value]="featureTag" severity="success" />
+
+					<h2
+						class="max-w-md text-balance text-3xl font-semibold leading-tight text-surface-100 sm:text-5xl"
+					>
+						{{ title }}
+					</h2>
+
+					<p class="max-w-xl text-base leading-relaxed text-surface-300 sm:text-lg">
+						{{ description }}
+					</p>
+
+					<ul class="space-y-3">
+						@for (point of points; track $index) {
+							<li class="flex items-center gap-3 text-base text-surface-100 sm:text-lg">
+								<p-avatar
+									[icon]="point.icon"
+									shape="circle"
+									size="normal"
+									class="!bg-emerald-400 !w-5 !h-5"
+								/>
+								<span>{{ point.label }}</span>
+							</li>
+						}
+					</ul>
+				</div>
+
+				<div class="mx-auto w-full max-w-md lg:max-w-none">
+					<div class="rounded-2xl border border-surface-700/80 bg-surface-900/70 p-3 sm:p-4">
+						<div class="overflow-hidden rounded-xl bg-surface-700/70">
+							<img
+								ngSrc="images/landing-page-ai-marketing-section.png"
+								width="900"
+								height="900"
+								alt="AI marketing assistant interface preview"
+								class="aspect-square w-full object-cover"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
