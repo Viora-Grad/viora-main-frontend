@@ -2,18 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavbarComponent } from './navbar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
 import { UiModeService } from '../../services/ui-mode.service';
 import { vi } from 'vitest';
 import { RouterTestingModule } from '@angular/router/testing';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi.fn(), // deprecated
+    addListener: vi.fn(),
     removeListener: vi.fn(),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
@@ -21,22 +20,22 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+interface UiModeServiceMock {
+	toggleDarkMode: ReturnType<typeof vi.fn>;
+	isDarkMode: ReturnType<typeof vi.fn>;
+}
+// any
+
 describe('NavbarComponent', () => {
 
 	let component: NavbarComponent;
 	let fixture: ComponentFixture<NavbarComponent>;
-	let router: any;
-	let uiModeService: any;
+	let uiModeService: UiModeServiceMock;
 
 	beforeEach(async () => {
-
-		const routerMock = {
-			navigate: vi.fn()
-		};
-
-		const uiModeMock = {
+		const uiModeMock: UiModeServiceMock = {
 			toggleDarkMode: vi.fn(),
-			isDarkMode: vi.fn().mockReturnValue(false)
+			isDarkMode: vi.fn().mockReturnValue(false),
 		};
 
 		await TestBed.configureTestingModule({
@@ -46,17 +45,13 @@ describe('NavbarComponent', () => {
 				ButtonModule,
 				RouterTestingModule,
 			],
-			providers: [
-				// { provide: Router, useValue: routerMock },
-				{ provide: UiModeService, useValue: uiModeMock }
-			]
+			providers: [{ provide: UiModeService, useValue: uiModeMock }],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(NavbarComponent);
 		component = fixture.componentInstance;
 
-		router = TestBed.inject(Router);
-		uiModeService = TestBed.inject(UiModeService);
+		uiModeService = TestBed.inject(UiModeService) as unknown as UiModeServiceMock;
 
 		fixture.detectChanges();
 	});
@@ -86,7 +81,6 @@ describe('NavbarComponent', () => {
 		expect(uiModeService.isDarkMode).toHaveBeenCalled();
 	});
 
-	// ✅ 6
 	it('should render buttons', () => {
 		const nativeElement = fixture.nativeElement as HTMLElement;
 		const buttons = nativeElement.querySelectorAll('button');
