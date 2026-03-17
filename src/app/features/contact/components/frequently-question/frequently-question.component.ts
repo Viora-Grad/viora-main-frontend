@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { MessageModule } from 'primeng/message';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 
@@ -15,6 +15,8 @@ import { AccordionModule } from 'primeng/accordion';
 	imports: [FloatLabelModule, InputTextModule, FormsModule, TextareaModule, ColorPickerModule, MessageModule, ToastModule, ButtonModule , ReactiveFormsModule , AccordionModule],
 	templateUrl: './frequently-question.component.html',
 	styleUrl: './frequently-question.component.css',
+	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FrequentlyQuestionComponent {
 	

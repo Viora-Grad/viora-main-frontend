@@ -67,38 +67,37 @@ describe('HaveQuestionsComponent', () => {
   });
 
   it('should submit form and reset if valid', () => {
-  vi.spyOn(messageService, 'add');
+    const addSpy = vi.spyOn(messageService, 'add');
 
-  component.sendQuestion.setValue({
-    username: 'Maryam',
-    email: 'maryam@gmail.com',
-    message: 'Hello!',
+    component.sendQuestion.setValue({
+      username: 'Maryam',
+      email: 'maryam@gmail.com',
+      message: 'Hello!',
+    });
+
+    expect(component.sendQuestion.valid).toBe(true);
+
+    component.Submit();
+
+    expect(addSpy).toHaveBeenCalled();
+
+    expect(addSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Form Submitted',
+      })
+    );
+
+    expect(component.sendQuestion.value).toEqual({
+      username: null,
+      email: null,
+      message: null,
+    });
   });
-
-  expect(component.sendQuestion.valid).toBe(true);
-
-  component.Submit();
-
-
- expect(messageService.add).toHaveBeenCalled();
-
-  expect(messageService.add).toHaveBeenCalledWith(
-    expect.objectContaining({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Form Submitted',
-    })
-  );
-
-  expect(component.sendQuestion.value).toEqual({
-    username: null,
-    email: null,
-    message: null,
-  });
-});
 
   it('should not submit form if invalid', () => {
-    vi.spyOn(messageService, 'add');
+    const addSpy = vi.spyOn(messageService, 'add');
 
     component.sendQuestion.setValue({
       username: '',
@@ -108,7 +107,7 @@ describe('HaveQuestionsComponent', () => {
 
     component.Submit();
 
-    expect(messageService.add).not.toHaveBeenCalled();
+    expect(addSpy).not.toHaveBeenCalled();
     expect(component.formSubmitted).toBe(true);
   });
 
