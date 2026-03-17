@@ -1,0 +1,61 @@
+
+    <section class="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 ">
+        <div class="space-y-8">
+            <h2 class="text-3xl font-bold">Still need help?</h2>
+            <p class="text-slate-500 text-lg">
+                If you couldn't find what you were looking for, our team is ready to assist you personally. We typically respond to all inquiries within 24 hours.
+            </p>
+            
+            <div class="gap-4">
+                <div>
+                    <h4 class="font-bold text-lg">Email Us</h4>
+                <a href="mailto:teamcomplex@gmail.com" class="text-slate-500  hover:underline">teamcomplex@gmail.com</a>
+            </div>
+        </div>
+
+    </div>
+    
+    <p-toast />
+    <form [formGroup]="sendQuestion" (ngSubmit)="Submit()" class="space-y-5">
+        <div class="flex flex-col gap-1">
+            <p-floatlabel variant="on">
+                <input pInputText type="text" id="username" pSize="large" class="w-full" formControlName="username" [invalid]="isInvalid('username')" />
+                <label for="username">Name</label>
+            </p-floatlabel>
+
+            @if (isInvalid('username')) {
+                <p-message severity="error" size="small" variant="simple">
+                    Name is required.
+                </p-message>
+            }
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <p-floatlabel variant="on">
+                <input pInputText type="email" id="email" pSize="large" autocomplete="off" class="w-full" formControlName="email" [invalid]="isInvalid('email')" />
+                <label for="email">Email Address</label>
+            </p-floatlabel>
+            @if (isInvalid('email')) {
+            @if (sendQuestion.get('email')?.errors?.['required']) {
+                <p-message severity="error" size="small" variant="simple" class="m-0 p-0">Email is required.</p-message>
+            }
+            @if (sendQuestion.get('email')?.errors?.['email']) {
+            <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+            }
+            }
+        </div>
+
+        <p-floatlabel variant="on">
+            <textarea pTextarea id="message" rows="5" cols="30" class="h-full w-full" formControlName="message" [invalid]="isInvalid('message')"></textarea>
+            <label for="message">Message</label>
+            @if (isInvalid('message')) {
+            <p-message severity="error" size="small" variant="simple">Message is required.</p-message>
+            }
+        </p-floatlabel>
+
+        <button pButton severity="secondary" type="submit">
+            <span pButtonLabel>Send</span>
+        </button>
+    </form>
+
+    </section>
