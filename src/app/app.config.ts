@@ -5,6 +5,7 @@ import { definePreset, palette } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
+import { MessageService } from 'primeng/api';
 
 const VIORA_PRESET = definePreset(Aura, {
 	semantic: {
@@ -24,5 +25,7 @@ export const appConfig: ApplicationConfig = {
 				},
 			},
 		}),
+		MessageService,
+		
 	],
 };
