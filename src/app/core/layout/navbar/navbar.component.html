@@ -1,0 +1,24 @@
+<div class="card">
+    <p-menubar [model]="items">
+        <ng-template pTemplate="start">
+            <div class="flex items-center gap-2 px-2">
+                <!-- Viora Logo -->
+                <span class="text-xl font-bold tracking-tight">Viora</span>
+            </div>
+        </ng-template>
+        
+        <ng-template pTemplate="end">
+            <div class="flex items-center ">
+                <button type="button" (click)="toggleTheme()">
+                    @if (isDarkMode()) {
+                        <i class="pi pi-sun"></i>
+                    } @else {
+                        <i class="pi pi-moon"></i>
+                    }
+                </button>
+                <p-button type="button" label="Get Started" severity="contrast"/>
+                <p-button type="button" label="Login" severity="secondary" class="mx-3" />
+            </div>
+        </ng-template>
+    </p-menubar>
+</div>
