@@ -1,0 +1,31 @@
+<section class="py-16 sm:py-20">
+	<div class="mx-auto w-full max-w-6xl px-6 sm:px-10">
+		<header class="mx-auto text-center">
+			<h2 class="text-balance text-3xl font-extrabold leading-tight text-primary sm:text-6xl">
+				{{ title }}
+			</h2>
+			<p class="mx-auto mt-6 max-w-4xl text-base leading-relaxed text-primary-400 sm:text-xl">
+				{{ description }}
+			</p>
+		</header>
+
+		<div class="mt-24 grid gap-8 md:grid-cols-2">
+			@for (card of cards; track $index) {
+				<p-card
+					class="h-full border border-surface-200 shadow-none"
+					[pt]="{ body: { class: 'h-full p-7 sm:p-8' } }"
+				>
+					<div class="flex h-full flex-col gap-5">
+						<span
+							class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-500"
+						>
+							<i [class]="card.icon + ' purpose-icon'" aria-hidden="true"></i>
+						</span>
+						<h3 class="text-3xl font-semibold leading-tight text-primary">{{ card.title }}</h3>
+						<p class="leading-relaxed text-primary-400">{{ card.description }}</p>
+					</div>
+				</p-card>
+			}
+		</div>
+	</div>
+</section>
