@@ -1,0 +1,15 @@
+<section class="bg-surface-100 py-16 sm:py-20">
+	<div class="mx-auto w-full max-w-6xl px-6 sm:px-10">
+		<header class="mb-12">
+			<h2 class="text-balance text-3xl font-semibold leading-tight text-primary sm:text-4xl">
+				{{ title }}
+			</h2>
+		</header>
+
+		<div class="space-y-6">
+			@for (paragraph of paragraphs; track $index) {
+				<p class="text-base text-leading-relaxed sm:text-lg">{{ paragraph }}</p>
+			}
+		</div>
+	</div>
+</section>
