@@ -1,0 +1,30 @@
+<section class="bg-surface-100 py-16 sm:py-20">
+	<div class="mx-auto w-full max-w-6xl px-6 sm:px-10">
+		<div class="space-y-10 py-2 sm:py-4">
+			<header class="mx-auto max-w-4xl text-center">
+				<h2 class="text-balance text-3xl font-semibold leading-tight sm:text-4xl text-primary">
+					{{ title }}
+				</h2>
+			</header>
+
+			<ol class="mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+				@for (step of steps; track $index) {
+					<li class="space-y-4 text-center">
+						<p-avatar
+							[label]="step.step"
+							shape="circle"
+							size="xlarge"
+							class="bg-primary! text-surface-100!"
+						/>
+						<h3 class="text-xl font-semibold leading-tight">
+							{{ step.title }}
+						</h3>
+						<p class="text-base leading-relaxed text-muted-color">
+							{{ step.description }}
+						</p>
+					</li>
+				}
+			</ol>
+		</div>
+	</div>
+</section>

@@ -37,6 +37,7 @@ export class UiModeService {
 			});
 			transition.ready.catch(() => {
 				void 0;
+				/* empty */
 			});
 		} else {
 			this._applyDarkMode(isDark);
