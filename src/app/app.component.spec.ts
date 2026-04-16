@@ -3,24 +3,28 @@ import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
 	beforeEach(async () => {
-		window.matchMedia ??= ((query: string) => ({
-			matches: false,
-			media: query,
-			onchange: null,
-			addListener: () => {
-				/* noop */
-			},
-			removeListener: () => {
-				/* noop */
-			},
-			addEventListener: () => {
-				/* noop */
-			},
-			removeEventListener: () => {
-				/* noop */
-			},
-			dispatchEvent: () => false,
-		})) as typeof window.matchMedia;
+		Object.defineProperty(window, 'matchMedia', {
+			writable: true,
+			value: (query: string): MediaQueryList =>
+				({
+					matches: false,
+					media: query,
+					onchange: null,
+					addListener: () => {
+						void 0;
+					},
+					removeListener: () => {
+						void 0;
+					},
+					addEventListener: () => {
+						void 0;
+					},
+					removeEventListener: () => {
+						void 0;
+					},
+					dispatchEvent: () => false,
+				}) as MediaQueryList,
+		});
 
 		await TestBed.configureTestingModule({
 			imports: [AppComponent],

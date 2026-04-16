@@ -2,7 +2,7 @@ import { effect, Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UiModeService {
-	private static readonly _STORAGE_KEY = 'viora-dark-mode';
+	private static readonly STORAGE_KEY = 'viora-dark-mode';
 
 	public readonly darkMode = signal(this._loadDarkMode());
 
@@ -18,7 +18,7 @@ export class UiModeService {
 				return;
 			}
 			this._handleDarkModeTransition(isDark);
-			localStorage.setItem(UiModeService._STORAGE_KEY, JSON.stringify(isDark));
+			localStorage.setItem(UiModeService.STORAGE_KEY, JSON.stringify(isDark));
 		});
 	}
 
@@ -36,6 +36,7 @@ export class UiModeService {
 				this._applyDarkMode(isDark);
 			});
 			transition.ready.catch(() => {
+				void 0;
 				/* empty */
 			});
 		} else {
@@ -48,12 +49,12 @@ export class UiModeService {
 	}
 
 	private _loadDarkMode(): boolean {
-		const stored = localStorage.getItem(UiModeService._STORAGE_KEY);
+		const stored = localStorage.getItem(UiModeService.STORAGE_KEY);
 		if (stored !== null) {
 			return JSON.parse(stored) === true;
 		}
 		let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		localStorage.setItem(UiModeService._STORAGE_KEY, JSON.stringify(isDark));
+		localStorage.setItem(UiModeService.STORAGE_KEY, JSON.stringify(isDark));
 		return isDark;
 	}
 }
