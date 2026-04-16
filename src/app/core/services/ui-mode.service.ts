@@ -8,7 +8,7 @@ export class UiModeService {
 
 	private _initialized = false;
 
-	constructor() {
+	public constructor() {
 		this._applyDarkMode(this.darkMode());
 
 		effect(() => {
@@ -35,7 +35,9 @@ export class UiModeService {
 			const transition = document.startViewTransition(() => {
 				this._applyDarkMode(isDark);
 			});
-			transition.ready.catch(() => {});
+			transition.ready.catch(() => {
+				/* empty */
+			});
 		} else {
 			this._applyDarkMode(isDark);
 		}
