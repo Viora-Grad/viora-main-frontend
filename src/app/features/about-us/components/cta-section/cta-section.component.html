@@ -1,0 +1,34 @@
+<section class="py-16 sm:py-20">
+	<div class="mx-auto w-full max-w-6xl px-6 sm:px-10">
+		<div
+			class="cta-shell rounded-3xl bg-linear-to-r from-primary via-primary to-surface-950 px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20"
+		>
+			<div class="cta-clip" aria-hidden="true"></div>
+
+			<div class="relative z-10 mx-auto max-w-4xl space-y-8 text-center">
+				<h2
+					class="text-balance text-2xl font-semibold leading-tight text-surface-100 sm:text-3xl lg:text-4xl"
+				>
+					{{ heading }}
+				</h2>
+
+				<div class="flex flex-wrap items-center justify-center gap-4">
+					<p-button
+						[label]="primaryButtonLabel"
+						size="large"
+						[rounded]="false"
+						[raised]="true"
+						styleClass="!bg-surface-0 !border-surface-0 !text-primary-700 hover:!bg-surface-100"
+					/>
+					<p-button
+						[label]="secondaryButtonLabel"
+						size="large"
+						variant="outlined"
+						[rounded]="false"
+						styleClass="!border-surface-0 !text-surface-0 hover:!bg-surface-0/10"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
