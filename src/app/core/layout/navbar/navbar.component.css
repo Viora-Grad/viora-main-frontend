@@ -1,5 +1,79 @@
-i{
-    font-size:30px;
-    margin-right:1.2rem;
-    cursor: pointer;
+i {
+	font-size: 30px;
+	margin-right: 1.2rem;
+	cursor: pointer;
+}
+
+/* Transparent navbar state - at top of page */
+.navbar-transparent {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+}
+
+.navbar-transparent .card {
+	border: none;
+	box-shadow: none;
+}
+
+.navbar-transparent .card :deep(.p-menubar) {
+	border: none;
+}
+
+.navbar-transparent :deep(.p-menuitem-link),
+.navbar-transparent :deep(.p-menubar-end),
+.navbar-transparent :deep(.p-menubar-start),
+.navbar-transparent :deep(.text-xl),
+.navbar-transparent :deep(.p-button-label) {
+	color: white;
+}
+
+.navbar-transparent :deep(.p-button) {
+	color: white;
+}
+
+.navbar-transparent :deep(.p-button.p-button-secondary),
+.navbar-transparent :deep(.p-button.p-button-contrast) {
+	border-color: white;
+	color: white;
+}
+
+/* Scrolled navbar state - sticky with design */
+.navbar-scrolled {
+	position: sticky;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	background-color: white;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-scrolled .card {
+	background-color: white;
+	border: none;
+	box-shadow: none;
+}
+
+.navbar-scrolled .card :deep(.p-menubar) {
+	background-color: white;
+	border: none;
+}
+
+.navbar-scrolled :deep(.p-menuitem-link),
+.navbar-scrolled :deep(.text-xl),
+.navbar-scrolled :deep(.p-button-label) {
+	color: #333;
+}
+
+.navbar-scrolled :deep(.p-button.p-button-secondary),
+.navbar-scrolled :deep(.p-button.p-button-contrast) {
+	border-color: #333;
+	color: #333;
 }

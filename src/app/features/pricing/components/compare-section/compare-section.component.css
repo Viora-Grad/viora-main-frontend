@@ -1,0 +1,26 @@
+:host {
+	display: block;
+}
+
+table {
+	border-collapse: collapse;
+	background-color: white;
+}
+
+th,
+td {
+	vertical-align: middle;
+}
+
+thead tr {
+	background-color: var(--surface-50);
+}
+
+tbody tr {
+	background-color: white;
+	transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+	background-color: var(--surface-25);
+}

@@ -1,59 +1,61 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule, RouterLink } from '@angular/router';
-import { MenubarModule } from 'primeng/menubar';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, effect, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { UiModeService } from '../../services/ui-mode.service';
-
+import { MenubarModule } from 'primeng/menubar';
 
 @Component({
 	selector: 'app-navbar',
 	templateUrl: './navbar.component.html',
 	styleUrl: './navbar.component.css',
-    // standalone: true,
-    imports: [MenubarModule, ButtonModule]
+	imports: [MenubarModule, ButtonModule, CommonModule],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
+	private readonly _scrollPosition = signal(0);
+	public readonly isScrolled = signal(false);
+	// private readonly _uiModeService = inject(UiModeService);
 
-items: MenuItem[] | undefined;
+	public constructor() {
+		effect(() => {
+			// Setup scroll listener
+			const handleScroll = () => {
+				this._scrollPosition.set(window.scrollY);
+				this.isScrolled.set(window.scrollY > 50); // Change to sticky after 50px scroll
+			};
 
-    private readonly _uiModelService = inject(UiModeService)
+			window.addEventListener('scroll', handleScroll);
 
-    constructor(private router: Router) {}
+			return () => {
+				window.removeEventListener('scroll', handleScroll);
+			};
+		});
+	}
 
-    ngOnInit() {
-        this.items = [
-           {
-                label: 'Home',
-                command: () => {
-                    this.router.navigate(['']);
-                }
-                // icon: 'pi pi-home'
-            },
-            {
-                label: 'Features',
-                routerLink: 'features'
-                // icon: 'pi pi-star'
-            },
-            {
-                label: 'Contact',
-                routerLink: 'contact'
-                // icon: 'pi pi-envelope'
-            },
-            {
-                label: 'About us',
-                routerLink: 'about'
-                // icon: 'pi pi-envelope'
-            },
-        ];
-    }
+	public readonly items: MenuItem[] = [
+		{
+			label: 'Features',
+			routerLink: '#',
+		},
+		{
+			label: 'Pricing',
+			routerLink: '/pricing',
+		},
+		{
+			label: 'About Us',
+			routerLink: '/about',
+		},
+		{
+			label: 'Contact',
+			routerLink: '#',
+		},
+	];
 
-    public toggleTheme():void {
-        this._uiModelService.toggleDarkMode();
-    }
+	// public toggleTheme(): void {
+	// 	this._uiModeService.toggleDarkMode();
+	// }
 
-    public isDarkMode(): boolean {
-        return this._uiModelService.isDarkMode();
-    }
-
+	// public isDarkMode(): boolean {
+	// 	return this._uiModeService.isDarkMode();
+	// }
 }

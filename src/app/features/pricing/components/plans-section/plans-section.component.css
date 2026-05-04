@@ -1,0 +1,110 @@
+:host {
+	display: block;
+	width: 100%;
+}
+
+.plans-billing-glider {
+	position: relative;
+	width: min(100%, 30rem);
+	border-radius: 9999px;
+	background: rgb(229 231 235);
+	padding: 0.3rem;
+	isolation: isolate;
+}
+
+.plans-billing-glider::before {
+	content: '';
+	position: absolute;
+	top: 0.3rem;
+	left: 0.3rem;
+	height: calc(100% - 0.6rem);
+	width: calc((100% - 0.6rem) / 3);
+	border-radius: 9999px;
+	background: white;
+	box-shadow: 0 1px 2px rgb(15 23 42 / 0.08);
+	transform: translateX(0%);
+	transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	z-index: 0;
+}
+
+.plans-billing-glider.is-semiannually::before {
+	transform: translateX(100%);
+}
+
+.plans-billing-glider.is-annually::before {
+	transform: translateX(200%);
+}
+
+:host ::ng-deep .plans-billing-glider .p-selectbutton {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: 0.25rem;
+	background: transparent;
+	padding: 0;
+	border: none;
+	position: relative;
+	z-index: 1;
+}
+
+:host ::ng-deep .plans-billing-glider .p-selectbutton .p-togglebutton {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background: transparent;
+	border-radius: 9999px;
+	color: rgb(100 116 139);
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.55rem 1.1rem;
+	white-space: nowrap;
+	transition: color 160ms ease;
+}
+
+:host ::ng-deep .plans-billing-glider .p-selectbutton .p-togglebutton .p-togglebutton-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	text-align: center;
+}
+
+:host ::ng-deep .plans-billing-glider .p-selectbutton .p-togglebutton .p-togglebutton-label {
+	display: block;
+	width: 100%;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 1;
+}
+
+:host ::ng-deep .plans-billing-glider .p-selectbutton .p-togglebutton.p-togglebutton-checked {
+	color: rgb(15 23 42);
+}
+
+:host ::ng-deep .plans-billing-glider .p-selectbutton .p-togglebutton:focus-visible {
+	outline: 2px solid rgb(99 102 241);
+	outline-offset: 2px;
+}
+
+:host ::ng-deep p-card:has(.plans-featured-badge) {
+	border: 2px solid rgb(34 25 68 / 0.7);
+	border-radius: 1rem;
+}
+
+.plans-featured-badge {
+	position: absolute;
+	top: -1.45rem;
+	left: 50%;
+	transform: translateX(-50%);
+	border-radius: 9999px;
+	background: rgb(34 25 68);
+	padding: 0.35rem 0.9rem;
+	font-size: 0.65rem;
+	font-weight: 700;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: white;
+	white-space: nowrap;
+}
