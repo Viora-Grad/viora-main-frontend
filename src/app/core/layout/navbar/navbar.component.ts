@@ -39,7 +39,7 @@ export class NavbarComponent {
 		},
 		{
 			label: 'Pricing',
-			routerLink: '#',
+			routerLink: '/pricing',
 		},
 		{
 			label: 'About Us',
