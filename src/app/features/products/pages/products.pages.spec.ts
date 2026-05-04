@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductsPage } from './products.pages';
-import { FeaturesGridComponent } from '../components/features-grid/features-grid.component';
+import { FeaturesGridComponent } from '../components/FeaturesGridSection/FeaturesGridSection.component';
 
 describe('ProductsPage', () => {
   let component: ProductsPage;

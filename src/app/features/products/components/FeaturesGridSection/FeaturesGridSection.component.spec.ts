@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FeaturesGridComponent } from './features-grid.component';
+import { FeaturesGridComponent } from './FeaturesGridSection.component';
 import { CardModule } from 'primeng/card';
 
 describe('FeaturesGridComponent', () => {

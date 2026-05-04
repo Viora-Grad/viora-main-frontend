@@ -4,8 +4,8 @@ import { CardModule } from 'primeng/card';
 @Component({
 	selector: 'app-features-grid',
 	imports: [CardModule],
-	templateUrl: './features-grid.component.html',
-	styleUrl: './features-grid.component.css',
+	templateUrl: './FeaturesGridSection.component.html',
+	styleUrl: './FeaturesGridSection.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true
 })

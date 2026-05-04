@@ -1,5 +1,5 @@
 import { Component , ChangeDetectionStrategy } from '@angular/core';
-import { FeaturesGridComponent } from '../components/features-grid/features-grid.component';
+import { FeaturesGridComponent } from '../components/FeaturesGridSection/FeaturesGridSection.component';
 
 @Component({
 	selector: 'app-products',
