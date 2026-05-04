@@ -13,8 +13,8 @@ import { AccordionModule } from 'primeng/accordion';
 @Component({
 	selector: 'app-frequently-question',
 	imports: [FloatLabelModule, InputTextModule, FormsModule, TextareaModule, ColorPickerModule, MessageModule, ToastModule, ButtonModule , ReactiveFormsModule , AccordionModule],
-	templateUrl: './frequently-question.component.html',
-	styleUrl: './frequently-question.component.css',
+	templateUrl: './FrequentlyQuestionSection.component.html',
+	styleUrl: './FrequentlyQuestionSection.component.css',
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

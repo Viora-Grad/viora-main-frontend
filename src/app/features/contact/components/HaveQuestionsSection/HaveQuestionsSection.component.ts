@@ -14,8 +14,8 @@ import { AccordionModule } from 'primeng/accordion';
 @Component({
     selector: 'app-have-questions',
     imports: [FloatLabelModule, InputTextModule, FormsModule, TextareaModule, ColorPickerModule, MessageModule, ToastModule, ButtonModule, ReactiveFormsModule, AccordionModule],
-    templateUrl: './have-questions.component.html',
-    styleUrl: './have-questions.component.css',
+    templateUrl: './HaveQuestionsSection.component.html',
+    styleUrl: './HaveQuestionsSection.component.css',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HaveQuestionsComponent } from './have-questions.component';
+import { HaveQuestionsComponent } from './HaveQuestionsSection.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';

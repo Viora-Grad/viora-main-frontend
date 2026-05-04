@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContactPage } from './contact.page';
-import { FrequentlyQuestionComponent } from '../components/frequently-question/frequently-question.component';
-import { HaveQuestionsComponent } from "../components/have-questions/have-questions.component";
+import { FrequentlyQuestionComponent } from '../components/FrequentlyQuestionSection/FrequentlyQuestionSection.component';
+import { HaveQuestionsComponent } from "../components/HaveQuestionsSection/HaveQuestionsSection.component";
 import { MessageService } from 'primeng/api';
 
 describe('ContactPage', () => {

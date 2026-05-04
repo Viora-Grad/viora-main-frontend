@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FrequentlyQuestionComponent } from '../components/frequently-question/frequently-question.component';
-import { HaveQuestionsComponent } from "../components/have-questions/have-questions.component";
+import { FrequentlyQuestionComponent } from '../components/FrequentlyQuestionSection/FrequentlyQuestionSection.component';
+import { HaveQuestionsComponent } from "../components/HaveQuestionsSection/HaveQuestionsSection.component";
 
 @Component({
 	selector: 'app-contact-page',
