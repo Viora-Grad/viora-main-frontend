@@ -34,8 +34,8 @@ export class NavbarComponent {
 
 	public readonly items: MenuItem[] = [
 		{
-			label: 'Features',
-			routerLink: '#',
+			label: 'Products',
+			routerLink: '/products',
 		},
 		{
 			label: 'Pricing',
@@ -47,7 +47,7 @@ export class NavbarComponent {
 		},
 		{
 			label: 'Contact',
-			routerLink: '#',
+			routerLink: '/contact',
 		},
 	];
 
