@@ -1,0 +1,70 @@
+<section class="block py-12 md:py-16 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+	<div class="mb-12 text-center">
+		<h2 class="mb-4 text-4xl !font-bold text-surface-950">{{ title }}</h2>
+		<p class="text-base text-surface-500">{{ subtitle }}</p>
+	</div>
+
+	<div class="overflow-x-auto rounded-lg border border-surface-200 bg-white shadow-sm">
+		<table class="w-full">
+			<thead>
+				<tr class="border-b border-surface-200 !bg-surface-200">
+					<th
+						class="px-8 py-6 text-left text-xs font-semibold uppercase tracking-wider text-surface-600"
+					>
+						FEATURE
+					</th>
+					@for (plan of planNames; track plan) {
+						<th
+							class="px-8 py-6 text-center text-xs font-semibold uppercase tracking-wider text-surface-600"
+						>
+							{{ plan }}
+						</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@for (feature of features; track feature.name; let last = $last) {
+					<tr
+						[class.border-b]="!last"
+						class="border-surface-200 hover:bg-surface-50/50 transition-colors"
+					>
+						<td class="px-8 py-6 text-sm font-semibold text-surface-900">{{ feature.name }}</td>
+						<td class="px-8 py-6 text-center text-sm text-surface-600">
+							@if (typeof feature.noRes === 'boolean') {
+								@if (feature.noRes) {
+									<span class="text-lg text-green-600 font-semibold">✓</span>
+								} @else {
+									<span class="text-lg text-surface-300">—</span>
+								}
+							} @else {
+								{{ feature.noRes }}
+							}
+						</td>
+						<td class="px-8 py-6 text-center text-sm font-semibold text-surface-900">
+							@if (typeof feature.reservation === 'boolean') {
+								@if (feature.reservation) {
+									<span class="text-lg text-green-600 font-semibold">✓</span>
+								} @else {
+									<span class="text-lg text-surface-300">—</span>
+								}
+							} @else {
+								{{ feature.reservation }}
+							}
+						</td>
+						<td class="px-8 py-6 text-center text-sm text-surface-600">
+							@if (typeof feature.enterprise === 'boolean') {
+								@if (feature.enterprise) {
+									<span class="text-lg text-green-600 font-semibold">✓</span>
+								} @else {
+									<span class="text-lg text-surface-300">—</span>
+								}
+							} @else {
+								{{ feature.enterprise }}
+							}
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</section>
