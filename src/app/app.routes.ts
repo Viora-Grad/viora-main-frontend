@@ -22,4 +22,11 @@ export const routes: Routes = [
 		path: '',
 		loadChildren: () => import('./features/landing/landing.routes').then((m) => m.LANDING_ROUTES),
 	},
+	{
+		path: 'auth',
+		loadChildren: () =>
+			import('./features/authentication/authentication.routes').then(
+				(m) => m.AUTHENTICATION_ROUTES,
+			),
+	},
 ];
