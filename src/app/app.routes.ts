@@ -19,14 +19,19 @@ export const routes: Routes = [
 			import('./features/about-us/about-us.routes').then((m) => m.ABOUT_US_ROUTES),
 	},
 	{
-		path: '',
-		loadChildren: () => import('./features/landing/landing.routes').then((m) => m.LANDING_ROUTES),
-	},
-	{
 		path: 'auth',
 		loadChildren: () =>
 			import('./features/authentication/authentication.routes').then(
 				(m) => m.AUTHENTICATION_ROUTES,
 			),
+	},
+	{
+		path: '',
+		pathMatch: 'full',
+		loadChildren: () => import('./features/landing/landing.routes').then((m) => m.LANDING_ROUTES),
+	},
+	{
+		path: '**',
+		redirectTo: '',
 	},
 ];

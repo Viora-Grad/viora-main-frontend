@@ -7,18 +7,7 @@ import {
 	withMethods,
 	withState,
 } from '@ngrx/signals';
-
-enum UserRole {
-	Owner = 'owner',
-	Customer = 'customer',
-}
-
-interface User {
-	id: string;
-	email: string;
-	name: string;
-	role?: UserRole;
-}
+import { User } from '../../models/user.model';
 
 interface AuthState {
 	currentUser: User | null;

@@ -56,7 +56,7 @@ describe('NavbarComponent', () => {
 
 	it('should initialize menu items on ngOnInit', () => {
 		expect(component.items?.length).toBe(4);
-		expect(component.items?.[0].label).toBe('Features');
+		expect(component.items?.[0].label).toBe('Products');
 	});
 
 	// it('should call toggleDarkMode when toggleTheme is triggered', () => {
