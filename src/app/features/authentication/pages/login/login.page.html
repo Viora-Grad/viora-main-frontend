@@ -1,3 +1,4 @@
+<p-toast />
 <div class="min-h-screen flex items-center justify-center p-4 bg-gray-50/50">
 	<div
 		class="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-[0_2px_40px_rgba(0,0,0,0.04)] border border-gray-100"
@@ -11,7 +12,9 @@
 		</div>
 
 		<!-- Single Sign On -->
-		<app-google-button />
+		<app-google-button
+			(clicked)="onGoogleLogin()"
+		/>
 
 		<!-- Divider -->
 		<div class="flex items-center my-8">
@@ -21,7 +24,7 @@
 		</div>
 
 		<!-- Form -->
-		<form class="space-y-5" onsubmit="event.preventDefault()">
+		<form [formGroup]="form" class="space-y-5">
 			<!-- Email Input -->
 			<div class="space-y-1.5">
 				<label
@@ -35,6 +38,7 @@
 						id="email-input"
 						type="email"
 						pInputText
+						formControlName="email"
 						placeholder="dr.smith@viora.com"
 						class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 pl-11 pr-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
 					/>
@@ -59,6 +63,7 @@
 					<p-inputicon class="pi pi-lock" />
 					<p-password
 						id="password-input"
+						formControlName="password"
 						name="password"
 						[toggleMask]="true"
 						[feedback]="false"
@@ -70,7 +75,7 @@
 
 			<!-- Checkbox -->
 			<div class="flex items-center pt-2 pb-4">
-				<p-checkbox [binary]="true" id="checkbox-input" name="remember" />
+				<p-checkbox [binary]="true" formControlName="rememberMe" id="checkbox-input" name="remember" />
 				<label
 					class="ml-3 text-[14px] font-medium text-gray-500 cursor-pointer select-none"
 					for="checkbox-input"
@@ -86,6 +91,7 @@
 				[size]="'large'"
 				[rounded]="false"
 				[raised]="true"
+				[disabled]="true"
 				styleClass="w-full !bg-primary !border-primary hover:!bg-primary-700"
 			/>
 		</form>

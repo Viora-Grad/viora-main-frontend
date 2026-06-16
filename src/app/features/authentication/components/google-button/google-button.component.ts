@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
 	selector: 'app-google-button',
-    imports: [ButtonModule],
+	imports: [ButtonModule],
 	template: `
 		<p-button
 			type="button"
+			(click)="clicked.emit()"
 			styleClass="w-full !flex !items-center !justify-center !gap-3 !bg-white !border !border-gray-200 !rounded-xl !px-4 !py-3 !text-sm !font-bold !text-gray-700 hover:!bg-gray-50 !transition-colors !shadow-sm"
 		>
 			<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -32,4 +33,6 @@ import { ButtonModule } from 'primeng/button';
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GoogleButtonComponent {}
+export class GoogleButtonComponent {
+	public readonly clicked = output<void>();
+}
