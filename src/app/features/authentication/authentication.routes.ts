@@ -7,7 +7,11 @@ export const AUTHENTICATION_ROUTES: Routes = [
 	},
 	{
 		path: 'callback',
-		loadComponent: () =>
-			import('./pages/callback/callback.page').then((m) => m.CallbackPage),
+		loadComponent: () => import('./pages/callback/callback.page').then((m) => m.CallbackPage),
+	},
+	{
+		path: '',
+		pathMatch: 'full',
+		redirectTo: 'login',
 	},
 ];
