@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Observable, switchMap, tap, throwError } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { User } from '../../models/user.model';
 import { AuthApi } from '../apis/auth.api';
 import { AuthStore } from '../store/auth.store';
@@ -14,7 +15,7 @@ export class AuthService {
 	public loginWithGoogle(code: string): Observable<void> {
 		console.log('AuthService: loginWithGoogle called with code:', code);
 		this._authStore.setLoading();
-		return this._authApi.loginWithGoogle({ code }).pipe(
+		return this._authApi.loginWithGoogle({ code, redirectUri: environment.googleRedirectUri }).pipe(
 			tap((response) => {
 				this._authStore.setAuthDetails(response.user, response.accessToken, response.refreshToken);
 			}),

@@ -14,7 +14,7 @@ declare const google: {
 				// eslint-disable-next-line @typescript-eslint/naming-convention
 				redirect_uri: string;
 				// eslint-disable-next-line @typescript-eslint/naming-convention
-				ux_mode: 'redirect';
+				ux_mode: 'redirect' | 'popup';
 				scope: string;
 			}) => CodeClient;
 		};
