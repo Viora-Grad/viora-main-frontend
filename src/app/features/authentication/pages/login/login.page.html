@@ -12,9 +12,7 @@
 		</div>
 
 		<!-- Single Sign On -->
-		<app-google-button
-			(clicked)="onGoogleLogin()"
-		/>
+		<app-google-button (clicked)="onGoogleLogin()" />
 
 		<!-- Divider -->
 		<div class="flex items-center my-8">
@@ -24,7 +22,7 @@
 		</div>
 
 		<!-- Form -->
-		<form [formGroup]="form" class="space-y-5">
+		<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
 			<!-- Email Input -->
 			<div class="space-y-1.5">
 				<label
@@ -43,6 +41,15 @@
 						class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 pl-11 pr-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
 					/>
 				</p-iconfield>
+				@if (form.controls.email.touched && form.controls.email.invalid) {
+					<p class="text-[12px] text-red-500 font-medium mt-1">
+						@if (form.controls.email.errors?.['required']) {
+							Email is required.
+						} @else if (form.controls.email.errors?.['email']) {
+							Please enter a valid email.
+						}
+					</p>
+				}
 			</div>
 
 			<!-- Password Input -->
@@ -71,16 +78,24 @@
 						inputStyleClass="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 pl-11 pr-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
 					/>
 				</p-iconfield>
+				@if (form.controls.password.touched && form.controls.password.invalid) {
+					<p class="text-[12px] text-red-500 font-medium mt-1">Password is required.</p>
+				}
 			</div>
 
 			<!-- Checkbox -->
 			<div class="flex items-center pt-2 pb-4">
-				<p-checkbox [binary]="true" formControlName="rememberMe" id="checkbox-input" name="remember" />
+				<p-checkbox
+					[binary]="true"
+					formControlName="rememberMe"
+					id="checkbox-input"
+					name="remember"
+				/>
 				<label
 					class="ml-3 text-[14px] font-medium text-gray-500 cursor-pointer select-none"
 					for="checkbox-input"
 				>
-					Stay signed in for 30 days
+					Remember me
 				</label>
 			</div>
 
@@ -91,7 +106,7 @@
 				[size]="'large'"
 				[rounded]="false"
 				[raised]="true"
-				[disabled]="true"
+				[loading]="isSubmitting()"
 				styleClass="w-full !bg-primary !border-primary hover:!bg-primary-700"
 			/>
 		</form>

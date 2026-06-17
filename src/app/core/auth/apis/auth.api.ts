@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { User } from '../../models/user.model';
 import { GoogleLoginRequest } from './dtos/google-login-request.dto';
+import { LoginRequest } from './dtos/login-request.dto';
 import { LoginResponse } from './dtos/login-response.dto';
 import { RefreshTokenRequest } from './dtos/refresh-token-request.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token-response.dto';
@@ -12,6 +13,10 @@ import { RefreshTokenResponse } from './dtos/refresh-token-response.dto';
 export class AuthApi {
 	private readonly _http = inject(HttpClient);
 	private readonly _baseUrl = environment.apiBaseUrl;
+
+	public login(request: LoginRequest): Observable<LoginResponse> {
+		return this._http.post<LoginResponse>(`${this._baseUrl}/auth/login`, request);
+	}
 
 	public loginWithGoogle(request: GoogleLoginRequest): Observable<LoginResponse> {
 		return this._http.post<LoginResponse>(`${this._baseUrl}/auth/google`, request);

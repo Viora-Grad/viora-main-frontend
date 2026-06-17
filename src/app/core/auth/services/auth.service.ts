@@ -12,12 +12,29 @@ export class AuthService {
 	private readonly _authStore = inject(AuthStore);
 	private readonly _router = inject(Router);
 
+	public login(email: string, password: string): Observable<void> {
+		this._authStore.setLoading();
+		return this._authApi.login({ email, password }).pipe(
+			tap((response) => {
+				this._authStore.setAuthDetails(
+					response.user,
+					response.accessToken,
+					response.refreshToken,
+				);
+			}),
+			switchMap(() => this._fetchProfileAndNavigate()),
+		);
+	}
+
 	public loginWithGoogle(code: string): Observable<void> {
-		console.log('AuthService: loginWithGoogle called with code:', code);
 		this._authStore.setLoading();
 		return this._authApi.loginWithGoogle({ code, redirectUri: environment.googleRedirectUri }).pipe(
 			tap((response) => {
-				this._authStore.setAuthDetails(response.user, response.accessToken, response.refreshToken);
+				this._authStore.setAuthDetails(
+					response.user,
+					response.accessToken,
+					response.refreshToken,
+				);
 			}),
 			switchMap(() => this._fetchProfileAndNavigate()),
 		);
