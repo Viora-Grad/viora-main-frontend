@@ -26,6 +26,9 @@ export class CallbackPage implements OnInit {
 	private readonly _authService = inject(AuthService);
 	private readonly _messageService = inject(MessageService);
 
+	private static readonly GOOGLE_AUTH_FLOW_KEY = 'google_auth_flow';
+	private static readonly GOOGLE_AUTH_CODE_KEY = 'google_auth_code';
+
 	public ngOnInit(): void {
 		this._route.queryParams.subscribe((params) => {
 			const code = params['code'] as string | undefined;
@@ -38,6 +41,7 @@ export class CallbackPage implements OnInit {
 					detail: (params['error_description'] as string) ?? 'Google authentication failed. Please try again.',
 					life: 5000,
 				});
+				sessionStorage.removeItem(CallbackPage.GOOGLE_AUTH_FLOW_KEY);
 				setTimeout(() => {
 					void this._router.navigate(['/auth/login']);
 				}, 2000);
@@ -45,6 +49,15 @@ export class CallbackPage implements OnInit {
 			}
 
 			if (code) {
+				const flow = sessionStorage.getItem(CallbackPage.GOOGLE_AUTH_FLOW_KEY);
+
+				if (flow === 'register') {
+					sessionStorage.removeItem(CallbackPage.GOOGLE_AUTH_FLOW_KEY);
+					sessionStorage.setItem(CallbackPage.GOOGLE_AUTH_CODE_KEY, code);
+					void this._router.navigate(['/auth/register']);
+					return;
+				}
+
 				this._authService.loginWithGoogle(code).subscribe({
 					error: () => {
 						void this._router.navigate(['/auth/login']);

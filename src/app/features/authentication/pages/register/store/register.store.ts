@@ -1,0 +1,71 @@
+import { computed } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { Gender } from '../../../../../core/models/gender.enum';
+
+export interface RegisterState {
+	currentStep: number;
+	totalSteps: number;
+	isGoogleSignup: boolean;
+	googleAuthCode: string | null;
+	email: string;
+	password: string;
+	firstName: string;
+	lastName: string;
+	dateOfBirth: string;
+	gender: Gender | null;
+}
+
+const initialState: RegisterState = {
+	currentStep: 1,
+	totalSteps: 4,
+	isGoogleSignup: false,
+	googleAuthCode: null,
+	email: '',
+	password: '',
+	firstName: '',
+	lastName: '',
+	dateOfBirth: '',
+	gender: null,
+};
+
+export const RegisterStore = signalStore(
+	withState(initialState),
+
+	withComputed((state) => ({
+		progress: computed(() => state.currentStep() / state.totalSteps()),
+		isLastStep: computed(() => state.currentStep() === state.totalSteps()),
+	})),
+
+	withMethods((store) => ({
+		setEmail(email: string): void {
+			patchState(store, { email });
+		},
+		setPassword(password: string): void {
+			patchState(store, { password });
+		},
+		setProfileDetails(firstName: string, lastName: string, dateOfBirth: string, gender: Gender): void {
+			patchState(store, { firstName, lastName, dateOfBirth, gender });
+		},
+		setGoogleAuthCode(code: string): void {
+			patchState(store, { googleAuthCode: code, isGoogleSignup: true });
+		},
+		nextStep(): void {
+			const next = Math.min(store.currentStep() + 1, store.totalSteps());
+			patchState(store, { currentStep: next });
+		},
+		prevStep(): void {
+			const prev = Math.max(store.currentStep() - 1, 1);
+			patchState(store, { currentStep: prev });
+		},
+		goToStep(step: number): void {
+			const clamped = Math.max(1, Math.min(step, store.totalSteps()));
+			patchState(store, { currentStep: clamped });
+		},
+		setGoogleSignup(isGoogle: boolean): void {
+			patchState(store, { isGoogleSignup: isGoogle });
+		},
+		reset(): void {
+			patchState(store, initialState);
+		},
+	})),
+);

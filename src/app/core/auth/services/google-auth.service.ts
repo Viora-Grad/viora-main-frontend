@@ -42,7 +42,7 @@ export class GoogleAuthService {
 	}
 
 	public async redirectToGoogle(): Promise<void> {
-		if (!this._scriptReady) return;
+		this.initialize();
 		await this._scriptReady;
 
 		const client = google.accounts.oauth2.initCodeClient({

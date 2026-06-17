@@ -14,15 +14,21 @@
 						<span class="text-sm font-medium text-gray-700 mr-3">
 							{{ authStore.currentUser()?.firstName }}
 						</span>
+						<p-button type="button" label="Logout" severity="secondary" (click)="onLogout()" />
+					} @else {
 						<p-button
 							type="button"
-							label="Logout"
-							severity="secondary"
-							(click)="onLogout()"
+							label="Get Started"
+							severity="contrast"
+							routerLink="/auth/register"
 						/>
-					} @else {
-						<p-button type="button" label="Get Started" severity="contrast" routerLink="/auth/login" />
-						<p-button type="button" label="Login" severity="secondary" class="mx-3" routerLink="/auth/login" />
+						<p-button
+							type="button"
+							label="Login"
+							severity="secondary"
+							class="mx-3"
+							routerLink="/auth/login"
+						/>
 					}
 				</div>
 			</ng-template>
