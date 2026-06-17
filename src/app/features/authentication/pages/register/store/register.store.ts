@@ -27,7 +27,7 @@ const initialState: RegisterState = {
 	dateOfBirth: '',
 	gender: null,
 };
-
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const RegisterStore = signalStore(
 	withState(initialState),
 
@@ -43,7 +43,12 @@ export const RegisterStore = signalStore(
 		setPassword(password: string): void {
 			patchState(store, { password });
 		},
-		setProfileDetails(firstName: string, lastName: string, dateOfBirth: string, gender: Gender): void {
+		setProfileDetails(
+			firstName: string,
+			lastName: string,
+			dateOfBirth: string,
+			gender: Gender,
+		): void {
 			patchState(store, { firstName, lastName, dateOfBirth, gender });
 		},
 		setGoogleAuthCode(code: string): void {
