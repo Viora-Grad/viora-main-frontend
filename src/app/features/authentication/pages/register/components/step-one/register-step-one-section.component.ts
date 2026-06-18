@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { AuthService } from '../../../../../../core/auth/services/auth.service';
 import { GoogleAuthService } from '../../../../../../core/auth/services/google-auth.service';
 import { GoogleButtonComponent } from '../../../../components/google-button/google-button.component';
 import { RegisterStore } from '../../store/register.store';
@@ -24,6 +26,8 @@ import { RegisterStore } from '../../store/register.store';
 export class RegisterStepOneSectionComponent {
 	private readonly _googleAuthService = inject(GoogleAuthService);
 	private readonly _registerStore = inject(RegisterStore);
+	private readonly _authService = inject(AuthService);
+	private readonly _messageService = inject(MessageService);
 
 	private static readonly GOOGLE_AUTH_FLOW_KEY = 'google_auth_flow';
 
@@ -51,8 +55,36 @@ export class RegisterStepOneSectionComponent {
 		if (this.emailForm.invalid) return;
 
 		const { email } = this.emailForm.getRawValue();
-		this._registerStore.setEmail(email!);
-		this._registerStore.nextStep();
-		this.completed.emit(email!);
+		this.isSubmitting.set(true);
+
+		this._authService.validateEmail(email!).subscribe({
+			next: (exists) => {
+				this.isSubmitting.set(false);
+
+				if (exists) {
+					this._messageService.add({
+						severity: 'error',
+						summary: 'Email Taken',
+						detail:
+							'This email address is already registered. Please use a different one or sign in.',
+						life: 5000,
+					});
+					return;
+				}
+
+				this._registerStore.setEmail(email!);
+				this._registerStore.nextStep();
+				this.completed.emit(email!);
+			},
+			error: () => {
+				this.isSubmitting.set(false);
+				this._messageService.add({
+					severity: 'error',
+					summary: 'Validation Failed',
+					detail: 'Unable to validate email. Please try again.',
+					life: 5000,
+				});
+			},
+		});
 	}
 }

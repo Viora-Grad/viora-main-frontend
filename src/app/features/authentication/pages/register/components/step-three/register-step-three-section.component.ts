@@ -1,12 +1,96 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DestroyRef,
+	computed,
+	inject,
+	signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+	AbstractControl,
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	ValidationErrors,
+	Validators,
+} from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
+import { RegisterStore } from '../../store/register.store';
+
+function passwordMatchValidator(confirmCtrl: AbstractControl): ValidationErrors | null {
+	const group = confirmCtrl.parent;
+	if (!group) return null;
+
+	const password = group.get('password')?.value as string | null;
+	const confirm = confirmCtrl.value as string | null;
+
+	if (!password || !confirm) return null;
+
+	return password === confirm ? null : { passwordMismatch: true };
+}
 
 @Component({
 	selector: 'app-register-step-three-section',
-	template: `
-		<p class="text-[15px] text-gray-500 font-medium leading-relaxed mb-8">
-			Step 3 — Coming soon.
-		</p>
-	`,
+	imports: [ReactiveFormsModule, PasswordModule, ButtonModule],
+	templateUrl: './register-step-three-section.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterStepThreeSectionComponent {}
+export class RegisterStepThreeSectionComponent {
+	private readonly _registerStore = inject(RegisterStore);
+	private readonly _destroyRef = inject(DestroyRef);
+
+	protected readonly passwordForm = new FormGroup({
+		password: new FormControl('', [
+			// eslint-disable-next-line @typescript-eslint/unbound-method
+			Validators.required,
+			Validators.minLength(8),
+			Validators.pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/),
+		]),
+		// eslint-disable-next-line @typescript-eslint/unbound-method
+		confirmPassword: new FormControl('', [Validators.required, passwordMatchValidator]),
+	});
+
+	private readonly _passwordValue = signal(this.passwordForm.controls.password.value ?? '');
+
+	protected readonly passwordChecks = computed(() => {
+		const pwd = this._passwordValue();
+		return {
+			minLength: pwd.length >= 8,
+			hasUppercase: /[A-Z]/.test(pwd),
+			hasNumber: /[0-9]/.test(pwd),
+			hasSpecial: /[^A-Za-z0-9]/.test(pwd),
+		};
+	});
+
+	public constructor() {
+		this.passwordForm.controls.password.valueChanges
+			.pipe(takeUntilDestroyed(this._destroyRef))
+			.subscribe((value) => {
+				this._passwordValue.set(value ?? '');
+				this.passwordForm.controls.confirmPassword.updateValueAndValidity({
+					onlySelf: true,
+					emitEvent: false,
+				});
+			});
+	}
+
+	public get passwordControl(): FormControl<string | null> {
+		return this.passwordForm.controls.password;
+	}
+
+	public get confirmPasswordControl(): FormControl<string | null> {
+		return this.passwordForm.controls.confirmPassword;
+	}
+
+	public onCreateAccount(): void {
+		this.passwordForm.markAllAsTouched();
+
+		if (this.passwordForm.invalid) return;
+
+		const { password } = this.passwordForm.getRawValue();
+		this._registerStore.setPassword(password!);
+		this._registerStore.nextStep();
+	}
+}

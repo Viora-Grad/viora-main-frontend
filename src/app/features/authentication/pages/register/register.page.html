@@ -7,17 +7,17 @@
 			<div class="flex items-center justify-between">
 				<h1 class="text-[32px] font-extrabold text-[#201335] tracking-tight">Create Account</h1>
 				<span class="text-[13px] font-semibold text-gray-400">
-					Step {{ registerStore.currentStep() }} of {{ registerStore.totalSteps() }}
+					Step {{ registerStore.currentStep() }} of {{ registerStore.effectiveTotalSteps() }}
 				</span>
 			</div>
 			<!-- Progress Bar -->
 			<div class="mt-4 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
 				<div
 					class="h-full bg-[#201335] rounded-full transition-all duration-500 ease-in-out"
-					[class.w-1/4]="registerStore.currentStep() === 1"
-					[class.w-1/2]="registerStore.currentStep() === 2"
-					[class.w-3/4]="registerStore.currentStep() === 3"
-					[class.w-full]="registerStore.currentStep() === 4"
+					[class.w-1/2]="registerStore.currentStep() === 1 && registerStore.isGoogleSignup()"
+					[class.w-full]="registerStore.isLastStep()"
+					[class.w-1/3]="registerStore.currentStep() === 1 && !registerStore.isGoogleSignup()"
+					[class.w-2/3]="registerStore.currentStep() === 2 && !registerStore.isGoogleSignup()"
 				></div>
 			</div>
 		</div>
@@ -35,9 +35,6 @@
 				}
 				@case (3) {
 					<app-register-step-three-section />
-				}
-				@case (4) {
-					<app-register-step-four-section />
 				}
 			}
 		</div>

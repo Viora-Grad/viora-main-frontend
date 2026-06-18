@@ -17,7 +17,7 @@ export interface RegisterState {
 
 const initialState: RegisterState = {
 	currentStep: 1,
-	totalSteps: 4,
+	totalSteps: 3,
 	isGoogleSignup: false,
 	googleAuthCode: null,
 	email: '',
@@ -33,7 +33,11 @@ export const RegisterStore = signalStore(
 
 	withComputed((state) => ({
 		progress: computed(() => state.currentStep() / state.totalSteps()),
-		isLastStep: computed(() => state.currentStep() === state.totalSteps()),
+		effectiveTotalSteps: computed(() => (state.isGoogleSignup() ? 2 : state.totalSteps())),
+		isLastStep: computed(() => {
+			if (state.isGoogleSignup()) return state.currentStep() === 2;
+			return state.currentStep() === state.totalSteps();
+		}),
 	})),
 
 	withMethods((store) => ({

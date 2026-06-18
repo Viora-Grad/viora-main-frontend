@@ -8,6 +8,10 @@ import { LoginRequest } from './dtos/login-request.dto';
 import { LoginResponse } from './dtos/login-response.dto';
 import { RefreshTokenRequest } from './dtos/refresh-token-request.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token-response.dto';
+import { ValidateEmailRequest } from './dtos/validate-email-request.dto';
+import { ValidateEmailResponse } from './dtos/validate-email-response.dto';
+import { ValidateGoogleAccountRequest } from './dtos/validate-google-account-request.dto';
+import { ValidateGoogleAccountResponse } from './dtos/validate-google-account-response.dto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
@@ -32,5 +36,20 @@ export class AuthApi {
 
 	public getProfile(): Observable<User> {
 		return this._http.get<User>(`${this._baseUrl}/auth/me`);
+	}
+
+	public validateEmail(request: ValidateEmailRequest): Observable<ValidateEmailResponse> {
+		return this._http.post(`${this._baseUrl}/auth/validate/email`, request, {
+			responseType: 'text',
+		});
+	}
+
+	public validateGoogleAccount(
+		request: ValidateGoogleAccountRequest,
+	): Observable<ValidateGoogleAccountResponse> {
+		return this._http.post<ValidateGoogleAccountResponse>(
+			`${this._baseUrl}/auth/oauth/google/validate`,
+			request,
+		);
 	}
 }
