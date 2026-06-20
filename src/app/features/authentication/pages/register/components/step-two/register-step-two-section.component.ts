@@ -3,7 +3,7 @@ import {
 	AbstractControl,
 	FormControl,
 	FormGroup,
-	 ReactiveFormsModule,
+	ReactiveFormsModule,
 	ValidationErrors,
 	Validators,
 } from '@angular/forms';
@@ -62,7 +62,6 @@ export class RegisterStepTwoSectionComponent {
 		firstName: new FormControl('', [Validators.required]),
 		// eslint-disable-next-line @typescript-eslint/unbound-method
 		lastName: new FormControl('', [Validators.required]),
-		// eslint-disable-next-line @typescript-eslint/unbound-method
 		dateOfBirth: new FormControl<Date | null>(null, [
 			// eslint-disable-next-line @typescript-eslint/unbound-method
 			Validators.required,
@@ -100,12 +99,7 @@ export class RegisterStepTwoSectionComponent {
 		const month = String(dob.getMonth() + 1).padStart(2, '0');
 		const day = String(dob.getDate()).padStart(2, '0');
 
-		this.registerStore.setProfileDetails(
-			firstName!,
-			lastName!,
-			`${year}-${month}-${day}`,
-			gender!,
-		);
+		this.registerStore.setProfileDetails(firstName!, lastName!, `${year}-${month}-${day}`, gender!);
 
 		if (this.registerStore.isGoogleSignup()) {
 			this._submitGoogleRegister();
@@ -118,18 +112,30 @@ export class RegisterStepTwoSectionComponent {
 	private _submitGoogleRegister(): void {
 		this.isSubmitting.set(true);
 
-		const { provider, providerKey, email, firstName, lastName, dateOfBirth, gender, googleAuthCode } =
-			this.registerStore;
+		const {
+			provider,
+			providerKey,
+			email,
+			firstName,
+			lastName,
+			dateOfBirth,
+			gender,
+			googleAuthCode,
+		} = this.registerStore;
 
 		this._authService
-			.registerWithOAuth(provider()!, {
-				firstName: firstName(),
-				lastName: lastName(),
-				dateOfBirth: dateOfBirth(),
-				gender: gender()!,
-				email: email(),
-				providerKey: providerKey()!,
-			}, googleAuthCode()!)
+			.registerWithOAuth(
+				provider()!,
+				{
+					firstName: firstName(),
+					lastName: lastName(),
+					dateOfBirth: dateOfBirth(),
+					gender: gender()!,
+					email: email(),
+					providerKey: providerKey()!,
+				},
+				googleAuthCode()!,
+			)
 			.subscribe({
 				next: () => {
 					this.isSubmitting.set(false);
