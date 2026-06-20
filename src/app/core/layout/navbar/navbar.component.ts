@@ -4,8 +4,8 @@ import { RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
-import { AuthStore } from '../../auth/store/auth.store';
 import { AuthService } from '../../auth/services/auth.service';
+import { AuthStore } from '../../auth/store/auth.store';
 
 @Component({
 	selector: 'app-navbar',
@@ -17,6 +17,8 @@ import { AuthService } from '../../auth/services/auth.service';
 export class NavbarComponent {
 	public readonly authStore = inject(AuthStore);
 	private readonly _authService = inject(AuthService);
+
+	public currentUser = this.authStore.currentUser;
 
 	private readonly _scrollPosition = signal(0);
 	public readonly isScrolled = signal(false);

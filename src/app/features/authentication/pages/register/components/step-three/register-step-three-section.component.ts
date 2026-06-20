@@ -1,8 +1,8 @@
 import {
 	ChangeDetectionStrategy,
 	Component,
-	DestroyRef,
 	computed,
+	DestroyRef,
 	inject,
 	signal,
 } from '@angular/core';
@@ -15,8 +15,10 @@ import {
 	ValidationErrors,
 	Validators,
 } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+import { AuthService } from '../../../../../../core/auth/services/auth.service';
 import { RegisterStore } from '../../store/register.store';
 
 function passwordMatchValidator(confirmCtrl: AbstractControl): ValidationErrors | null {
@@ -39,7 +41,11 @@ function passwordMatchValidator(confirmCtrl: AbstractControl): ValidationErrors 
 })
 export class RegisterStepThreeSectionComponent {
 	private readonly _registerStore = inject(RegisterStore);
+	private readonly _authService = inject(AuthService);
+	private readonly _messageService = inject(MessageService);
 	private readonly _destroyRef = inject(DestroyRef);
+
+	protected readonly isSubmitting = signal(false);
 
 	protected readonly passwordForm = new FormGroup({
 		password: new FormControl('', [
@@ -91,6 +97,33 @@ export class RegisterStepThreeSectionComponent {
 
 		const { password } = this.passwordForm.getRawValue();
 		this._registerStore.setPassword(password!);
-		this._registerStore.nextStep();
+
+		this.isSubmitting.set(true);
+
+		const { email, firstName, lastName, dateOfBirth, gender } = this._registerStore;
+
+		this._authService
+			.register({
+				email: email(),
+				password: password!,
+				firstName: firstName(),
+				lastName: lastName(),
+				dateOfBirth: dateOfBirth(),
+				gender: gender()!,
+			})
+			.subscribe({
+				next: () => {
+					this.isSubmitting.set(false);
+				},
+				error: (err: { error?: { message?: string } }) => {
+					this.isSubmitting.set(false);
+					this._messageService.add({
+						severity: 'error',
+						summary: 'Registration Failed',
+						detail: err?.error?.message ?? 'Unable to complete registration. Please try again.',
+						life: 5000,
+					});
+				},
+			});
 	}
 }

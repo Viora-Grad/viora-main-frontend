@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
 	AbstractControl,
 	FormControl,
@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { AuthService } from '../../../../../../core/auth/services/auth.service';
 import { Gender } from '../../../../../../core/models/gender.enum';
 import { RegisterStore } from '../../store/register.store';
 
@@ -43,7 +44,10 @@ function minimumAgeValidator(minAge: number) {
 })
 export class RegisterStepTwoSectionComponent {
 	protected readonly registerStore = inject(RegisterStore);
+	private readonly _authService = inject(AuthService);
 	private readonly _messageService = inject(MessageService);
+
+	protected readonly isSubmitting = signal(false);
 
 	protected readonly maxDate = new Date();
 
@@ -91,13 +95,54 @@ export class RegisterStepTwoSectionComponent {
 
 		const { firstName, lastName, dateOfBirth, gender } = this.profileForm.getRawValue();
 
+		const dob = dateOfBirth!;
+		const year = dob.getFullYear();
+		const month = String(dob.getMonth() + 1).padStart(2, '0');
+		const day = String(dob.getDate()).padStart(2, '0');
+
 		this.registerStore.setProfileDetails(
 			firstName!,
 			lastName!,
-			dateOfBirth!.toISOString(),
+			`${year}-${month}-${day}`,
 			gender!,
 		);
 
+		if (this.registerStore.isGoogleSignup()) {
+			this._submitGoogleRegister();
+			return;
+		}
+
 		this.registerStore.nextStep();
+	}
+
+	private _submitGoogleRegister(): void {
+		this.isSubmitting.set(true);
+
+		const { provider, providerKey, email, firstName, lastName, dateOfBirth, gender, googleAuthCode } =
+			this.registerStore;
+
+		this._authService
+			.registerWithOAuth(provider()!, {
+				firstName: firstName(),
+				lastName: lastName(),
+				dateOfBirth: dateOfBirth(),
+				gender: gender()!,
+				email: email(),
+				providerKey: providerKey()!,
+			}, googleAuthCode()!)
+			.subscribe({
+				next: () => {
+					this.isSubmitting.set(false);
+				},
+				error: (err: { error?: { message?: string } }) => {
+					this.isSubmitting.set(false);
+					this._messageService.add({
+						severity: 'error',
+						summary: 'Registration Failed',
+						detail: err?.error?.message ?? 'Unable to complete registration. Please try again.',
+						life: 5000,
+					});
+				},
+			});
 	}
 }

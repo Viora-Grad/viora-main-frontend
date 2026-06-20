@@ -7,6 +7,8 @@ export interface RegisterState {
 	totalSteps: number;
 	isGoogleSignup: boolean;
 	googleAuthCode: string | null;
+	provider: string | null;
+	providerKey: string | null;
 	email: string;
 	password: string;
 	firstName: string;
@@ -20,6 +22,8 @@ const initialState: RegisterState = {
 	totalSteps: 3,
 	isGoogleSignup: false,
 	googleAuthCode: null,
+	provider: null,
+	providerKey: null,
 	email: '',
 	password: '',
 	firstName: '',
@@ -57,6 +61,9 @@ export const RegisterStore = signalStore(
 		},
 		setGoogleAuthCode(code: string): void {
 			patchState(store, { googleAuthCode: code, isGoogleSignup: true });
+		},
+		setProviderDetails(provider: string, providerKey: string): void {
+			patchState(store, { provider, providerKey });
 		},
 		nextStep(): void {
 			const next = Math.min(store.currentStep() + 1, store.totalSteps());

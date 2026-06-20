@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -6,10 +6,11 @@ import { User } from '../../models/user.model';
 import { GoogleLoginRequest } from './dtos/google-login-request.dto';
 import { LoginRequest } from './dtos/login-request.dto';
 import { LoginResponse } from './dtos/login-response.dto';
+import { OAuthRegisterRequest } from './dtos/oauth-register-request.dto';
 import { RefreshTokenRequest } from './dtos/refresh-token-request.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token-response.dto';
+import { RegisterRequest } from './dtos/register-request.dto';
 import { ValidateEmailRequest } from './dtos/validate-email-request.dto';
-import { ValidateEmailResponse } from './dtos/validate-email-response.dto';
 import { ValidateGoogleAccountRequest } from './dtos/validate-google-account-request.dto';
 import { ValidateGoogleAccountResponse } from './dtos/validate-google-account-response.dto';
 
@@ -23,7 +24,7 @@ export class AuthApi {
 	}
 
 	public loginWithGoogle(request: GoogleLoginRequest): Observable<LoginResponse> {
-		return this._http.post<LoginResponse>(`${this._baseUrl}/auth/google`, request);
+		return this._http.post<LoginResponse>(`${this._baseUrl}/auth/oauth/google/login`, request);
 	}
 
 	public refreshToken(request: RefreshTokenRequest): Observable<RefreshTokenResponse> {
@@ -38,9 +39,9 @@ export class AuthApi {
 		return this._http.get<User>(`${this._baseUrl}/auth/me`);
 	}
 
-	public validateEmail(request: ValidateEmailRequest): Observable<ValidateEmailResponse> {
-		return this._http.post(`${this._baseUrl}/auth/validate/email`, request, {
-			responseType: 'text',
+	public validateEmail(request: ValidateEmailRequest): Observable<HttpResponse<void>> {
+		return this._http.post<void>(`${this._baseUrl}/auth/validate/email`, request, {
+			observe: 'response',
 		});
 	}
 
@@ -49,6 +50,17 @@ export class AuthApi {
 	): Observable<ValidateGoogleAccountResponse> {
 		return this._http.post<ValidateGoogleAccountResponse>(
 			`${this._baseUrl}/auth/oauth/google/validate`,
+			request,
+		);
+	}
+
+	public register(request: RegisterRequest): Observable<void> {
+		return this._http.post<void>(`${this._baseUrl}/auth/register`, request);
+	}
+
+	public registerWithOAuth(provider: string, request: OAuthRegisterRequest): Observable<void> {
+		return this._http.post<void>(
+			`${this._baseUrl}/auth/oauth/${provider}/register`,
 			request,
 		);
 	}

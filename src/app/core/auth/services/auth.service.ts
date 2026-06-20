@@ -1,12 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, switchMap, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { User } from '../../models/user.model';
 import { AuthApi } from '../apis/auth.api';
+import { OAuthRegisterRequest } from '../apis/dtos/oauth-register-request.dto';
+import { RegisterRequest } from '../apis/dtos/register-request.dto';
+import { ValidateGoogleAccountResponse } from '../apis/dtos/validate-google-account-response.dto';
 import { AuthStore } from '../store/auth.store';
-
-export const EMAIL_EXISTS_MESSAGE = 'Email Exists for a User';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,11 +16,16 @@ export class AuthService {
 	private readonly _authStore = inject(AuthStore);
 	private readonly _router = inject(Router);
 
-	public login(email: string, password: string): Observable<void> {
+	public login(email: string, password: string, rememberMe = true): Observable<void> {
 		this._authStore.setLoading();
 		return this._authApi.login({ email, password }).pipe(
 			tap((response) => {
-				this._authStore.setAuthDetails(response.user, response.accessToken, response.refreshToken);
+				this._authStore.setAuthDetails(
+					response.user,
+					response.accessToken,
+					response.refreshToken,
+					rememberMe,
+				);
 			}),
 			switchMap(() => this._fetchProfileAndNavigate()),
 		);
@@ -28,22 +35,57 @@ export class AuthService {
 		this._authStore.setLoading();
 		return this._authApi.loginWithGoogle({ code, redirectUri: environment.googleRedirectUri }).pipe(
 			tap((response) => {
-				this._authStore.setAuthDetails(response.user, response.accessToken, response.refreshToken);
+				this._authStore.setAuthDetails(
+					response.user,
+					response.accessToken,
+					response.refreshToken,
+					true,
+				);
 			}),
 			switchMap(() => this._fetchProfileAndNavigate()),
 		);
 	}
 
 	public validateEmail(email: string): Observable<boolean> {
-		return this._authApi
-			.validateEmail({ email })
-			.pipe(map((response) => response === EMAIL_EXISTS_MESSAGE));
+		return this._authApi.validateEmail({ email }).pipe(
+			map((response) => response.status === 409),
+			catchError((error: HttpErrorResponse) => {
+				if (error.status === 409) {
+					return of(true);
+				}
+				return throwError(() => error);
+			}),
+		);
 	}
 
-	public validateGoogleAccount(code: string): Observable<boolean> {
+	public validateGoogleAccount(code: string): Observable<ValidateGoogleAccountResponse> {
+		return this._authApi.validateGoogleAccount({
+			isCode: true,
+			code,
+			redirectUri: environment.googleRedirectUri,
+		});
+	}
+
+	public register(request: RegisterRequest): Observable<void> {
+		request.email = request.email.toLowerCase();
+		request.dateOfBirth = request.dateOfBirth.split('T')[0];
+		this._authStore.setLoading();
 		return this._authApi
-			.validateGoogleAccount({ isCode: true, code, redirectUri: environment.googleRedirectUri })
-			.pipe(map((response) => response.isUserExists));
+			.register(request)
+			.pipe(switchMap(() => this.login(request.email, request.password)));
+	}
+
+	public registerWithOAuth(
+		provider: string,
+		request: OAuthRegisterRequest,
+		googleAuthCode: string,
+	): Observable<void> {
+		request.email = request.email.toLowerCase();
+		request.dateOfBirth = request.dateOfBirth.split('T')[0];
+		this._authStore.setLoading();
+		return this._authApi
+			.registerWithOAuth(provider, request)
+			.pipe(switchMap(() => this.loginWithGoogle(googleAuthCode)));
 	}
 
 	public refreshTokens(): Observable<void> {
@@ -65,12 +107,13 @@ export class AuthService {
 	}
 
 	public logout(): void {
-		const refreshToken = this._authStore.refreshToken();
-		if (refreshToken) {
-			this._authApi.logout(refreshToken).subscribe();
-		}
+		// const refreshToken = this._authStore.refreshToken();
+		// if (refreshToken) {
+		// 	this._authApi.logout(refreshToken).subscribe();
+		// }
 		this._authStore.logout();
-		void this._router.navigate(['/auth/login']);
+		window.location.reload();
+		// void this._router.navigate(['/auth/login']);
 	}
 
 	private _fetchProfileAndNavigate(): Observable<void> {

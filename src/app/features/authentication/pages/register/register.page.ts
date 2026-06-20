@@ -37,8 +37,8 @@ export class RegisterPage implements OnInit {
 		sessionStorage.removeItem(RegisterPage.GOOGLE_AUTH_CODE_KEY);
 
 		this._authService.validateGoogleAccount(googleAuthCode).subscribe({
-			next: (exists) => {
-				if (exists) {
+			next: (response) => {
+				if (response.isUserExists) {
 					this._messageService.add({
 						severity: 'error',
 						summary: 'Account Exists',
@@ -52,6 +52,8 @@ export class RegisterPage implements OnInit {
 				}
 
 				this.registerStore.setGoogleAuthCode(googleAuthCode);
+				this.registerStore.setProviderDetails(response.provider, response.providerKey);
+				this.registerStore.setEmail(response.email);
 				this.registerStore.nextStep();
 			},
 			error: () => {

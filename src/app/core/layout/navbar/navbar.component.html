@@ -12,23 +12,24 @@
 				<div class="flex items-center">
 					@if (authStore.isAuthenticated()) {
 						<span class="text-sm font-medium text-gray-700 mr-3">
-							{{ authStore.currentUser()?.firstName }}
+							{{ currentUser()?.firstName ?? 'User' }}
 						</span>
 						<p-button type="button" label="Logout" severity="secondary" (click)="onLogout()" />
 					} @else {
-						<p-button
-							type="button"
-							label="Get Started"
-							severity="contrast"
-							routerLink="/auth/register"
-						/>
-						<p-button
-							type="button"
-							label="Login"
-							severity="secondary"
-							class="mx-3"
-							routerLink="/auth/login"
-						/>
+						<a routerLink="/auth/register" class="no-underline">
+							<p-button
+								type="button"
+								label="Register"
+								severity="contrast"
+							/>
+						</a>
+						<a routerLink="/auth/login" class="no-underline mx-3">
+							<p-button
+								type="button"
+								label="Login"
+								severity="secondary"
+							/>
+						</a>
 					}
 				</div>
 			</ng-template>

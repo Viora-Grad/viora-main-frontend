@@ -4,6 +4,7 @@ import { guestGuard } from '../../core/auth/guards/guest.guard';
 export const AUTHENTICATION_ROUTES: Routes = [
 	{
 		path: 'login',
+		canActivate: [guestGuard],
 		loadComponent: () => import('./pages/login/login.page').then((m) => m.LoginPage),
 	},
 	{
@@ -13,6 +14,7 @@ export const AUTHENTICATION_ROUTES: Routes = [
 	},
 	{
 		path: 'callback',
+		canActivate: [guestGuard],
 		loadComponent: () => import('./pages/callback/callback.page').then((m) => m.CallbackPage),
 	},
 	{

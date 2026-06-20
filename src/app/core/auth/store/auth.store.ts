@@ -11,6 +11,7 @@ import { User } from '../../models/user.model';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
+const REMEMBER_ME_KEY = 'remember_me';
 
 interface AuthState {
 	currentUser: User | null;
@@ -36,49 +37,71 @@ export const AuthStore = signalStore(
 	withState(initialState),
 
 	withComputed((state) => ({
-		isAuthenticated: computed(() => !!state.accessToken()),
+		isAuthenticated: computed(() => !!state.accessToken() && !!state.refreshToken()),
 	})),
 
-	withMethods((store) => ({
-		setAuthDetails(user: User, accessToken: string, refreshToken: string): void {
-			localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-			localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-			patchState(store, {
-				currentUser: user,
-				accessToken,
-				refreshToken,
-				error: null,
-				isLoading: false,
-			});
-		},
-		updateTokens(accessToken: string, refreshToken: string): void {
-			localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-			localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-			patchState(store, { accessToken, refreshToken });
-		},
-		setCurrentUser(user: User): void {
-			patchState(store, { currentUser: user });
-		},
-		setLoading(): void {
-			patchState(store, { isLoading: true, error: null });
-		},
-		setError(error: string): void {
-			patchState(store, { error, isLoading: false });
-		},
-		clearError(): void {
-			patchState(store, { error: null });
-		},
-		logout(): void {
-			localStorage.removeItem(ACCESS_TOKEN_KEY);
-			localStorage.removeItem(REFRESH_TOKEN_KEY);
-			patchState(store, initialState);
-		},
-	})),
+	withMethods((store) => {
+		let _useLocalStorage = true;
+
+		function _getStorage(rememberMe?: boolean): Storage {
+			return rememberMe === false ? sessionStorage : localStorage;
+		}
+
+		return {
+			setAuthDetails(
+				user: User,
+				accessToken: string,
+				refreshToken: string,
+				rememberMe = true,
+			): void {
+				_useLocalStorage = rememberMe;
+				const storage = _getStorage(rememberMe);
+				storage.setItem(ACCESS_TOKEN_KEY, accessToken);
+				storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+				localStorage.setItem(REMEMBER_ME_KEY, String(rememberMe));
+				patchState(store, {
+					currentUser: user,
+					accessToken,
+					refreshToken,
+					error: null,
+					isLoading: false,
+				});
+			},
+			updateTokens(accessToken: string, refreshToken: string): void {
+				const storage = _getStorage(_useLocalStorage);
+				storage.setItem(ACCESS_TOKEN_KEY, accessToken);
+				storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+				patchState(store, { accessToken, refreshToken });
+			},
+			setCurrentUser(user: User): void {
+				patchState(store, { currentUser: user });
+			},
+			setLoading(): void {
+				patchState(store, { isLoading: true, error: null });
+			},
+			setError(error: string): void {
+				patchState(store, { error, isLoading: false });
+			},
+			clearError(): void {
+				patchState(store, { error: null });
+			},
+			logout(): void {
+				localStorage.removeItem(ACCESS_TOKEN_KEY);
+				localStorage.removeItem(REFRESH_TOKEN_KEY);
+				sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+				sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+				localStorage.removeItem(REMEMBER_ME_KEY);
+				patchState(store, initialState);
+			},
+		};
+	}),
 
 	withHooks({
 		onInit(store) {
-			const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-			const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+			const rememberMe = localStorage.getItem(REMEMBER_ME_KEY) !== 'false';
+			const storage = rememberMe ? localStorage : sessionStorage;
+			const accessToken = storage.getItem(ACCESS_TOKEN_KEY);
+			const refreshToken = storage.getItem(REFRESH_TOKEN_KEY);
 			if (accessToken && refreshToken) {
 				patchState(store, { accessToken, refreshToken });
 			}

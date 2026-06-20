@@ -55,10 +55,10 @@ export class LoginPage {
 
 		if (this.form.invalid) return;
 
-		const { email, password } = this.form.getRawValue();
+		const { email, password, rememberMe } = this.form.getRawValue();
 		this.isSubmitting.set(true);
 
-		this._authService.login(email!, password!).subscribe({
+		this._authService.login(email!, password!, rememberMe ?? true).subscribe({
 			next: () => {
 				this.isSubmitting.set(false);
 			},
