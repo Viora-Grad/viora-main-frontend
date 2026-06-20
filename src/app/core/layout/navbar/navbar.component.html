@@ -10,15 +10,27 @@
 
 			<ng-template pTemplate="end">
 				<div class="flex items-center">
-					<!-- <button type="button" (click)="toggleTheme()">
-                        @if (isDarkMode()) {
-                            <i class="pi pi-sun"></i>
-                        } @else {
-                            <i class="pi pi-moon"></i>
-                        }
-                    </button> -->
-					<p-button type="button" label="Get Started" severity="contrast" />
-					<p-button type="button" label="Login" severity="secondary" class="mx-3" />
+					@if (authStore.isAuthenticated()) {
+						<span class="text-sm font-medium text-gray-700 mr-3">
+							{{ currentUser()?.firstName ?? 'User' }}
+						</span>
+						<p-button type="button" label="Logout" severity="secondary" (click)="onLogout()" />
+					} @else {
+						<a routerLink="/auth/register" class="no-underline">
+							<p-button
+								type="button"
+								label="Register"
+								severity="contrast"
+							/>
+						</a>
+						<a routerLink="/auth/login" class="no-underline mx-3">
+							<p-button
+								type="button"
+								label="Login"
+								severity="secondary"
+							/>
+						</a>
+					}
 				</div>
 			</ng-template>
 		</p-menubar>

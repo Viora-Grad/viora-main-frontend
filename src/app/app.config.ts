@@ -1,4 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 
 import { definePreset, palette } from '@primeuix/themes';
@@ -6,6 +7,7 @@ import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { MessageService } from 'primeng/api';
+import { authInterceptor } from './core/auth/interceptors/auth.interceptor';
 
 const VIORA_PRESET = definePreset(Aura, {
 	semantic: {
@@ -26,6 +28,6 @@ export const appConfig: ApplicationConfig = {
 			},
 		}),
 		MessageService,
-		
+		provideHttpClient(withInterceptors([authInterceptor])),
 	],
 };
