@@ -1,5 +1,0 @@
-export const environment = {
-	apiBaseUrl: 'YOUR_API_BASE_URL',
-	googleClientId: 'YOUR_GOOGLE_CLIENT_ID',
-	googleRedirectUri: 'YOUR_GOOGLE_REDIRECT_URI',
-};

@@ -34,6 +34,7 @@
 		"@angular/cli": "^21.2.0",
 		"@angular/compiler-cli": "^21.2.0",
 		"@eslint/js": "^10.0.1",
+		"@ngx-env/builder": "^21.0.1",
 		"angular-eslint": "21.3.0",
 		"eslint": "^10.0.2",
 		"jsdom": "^28.0.0",
