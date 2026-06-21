@@ -9,54 +9,28 @@
 			</p>
 		</header>
 
-		<div class="mt-24 flex flex-col items-center gap-4">
-			<div
-				class="plans-billing-glider"
-				[class.is-monthly]="selectedBillingCycle === 'monthly'"
-				[class.is-semiannually]="selectedBillingCycle === 'semiAnnually'"
-				[class.is-annually]="selectedBillingCycle === 'annually'"
-			>
-				<p-selectbutton
-					[options]="billingCycles"
-					[(ngModel)]="selectedBillingCycle"
-					optionLabel="label"
-					optionValue="value"
-					[allowEmpty]="false"
-				/>
-			</div>
-			<!-- <span
-				class="rounded-full bg-indigo-100 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-700"
-			>
-				Save 20% on annual
-			</span> -->
-		</div>
-
-		<div class="mt-10 grid gap-6 lg:grid-cols-3">
-			@for (plan of plans; track plan.name) {
-				<p-card
-					class="h-full border border-surface-200 shadow-none"
-					[pt]="{ body: { class: 'h-full p-6 sm:p-7' } }"
-				>
-					<article class="relative flex h-full flex-col">
-						@if (plan.featured) {
-							<span class="plans-featured-badge">Most Popular</span>
-						}
-
+		<div class="mt-16 grid gap-6 lg:grid-cols-3">
+			@for (plan of plans(); track plan.id) {
+				<p-card class="plans-card h-full" [pt]="{ body: { class: 'h-full p-6 sm:p-7' } }">
+					<article class="flex h-full flex-col">
 						<div class="space-y-2">
 							<h2 class="text-3xl font-semibold text-primary">{{ plan.name }}</h2>
-							<p class="text-base leading-relaxed text-primary-400">{{ plan.description }}</p>
+							<p class="text-base leading-relaxed text-primary-400">{{ plan.planContent }}</p>
 						</div>
 
 						<div class="mt-7 flex items-end gap-1">
-							<p class="text-6xl font-semibold leading-none text-primary">{{ plan.price }}</p>
-							@if (!plan.customPricing) {
-								<span class="pb-1 text-base font-medium text-primary-300">/mo</span>
-							}
+							<!-- <span class="pb-2 text-sm font-medium text-primary-400">EGP</span> -->
+							<p class="text-6xl font-semibold leading-none text-primary">
+								{{ plan.price | currency: 'EGP' : 'symbol-narrow' : '1.0-2' }}
+							</p>
+							<span class="pb-1 text-base font-medium text-primary-300"
+								>/{{ plan.planPeriodTime }}</span
+							>
 						</div>
 
 						<div class="mt-7 border-t border-surface-200 pt-6">
 							<p-button
-								[label]="plan.ctaLabel"
+								label="Get Started"
 								[size]="'large'"
 								[rounded]="false"
 								[raised]="true"
@@ -65,15 +39,53 @@
 						</div>
 
 						<ul class="mt-6 space-y-3">
-							@for (benefit of plan.benefits; track benefit) {
-								<li class="flex items-center gap-3 text-base text-primary-400">
+							@for (feature of plan.features; track feature.id) {
+								<li
+									class="flex items-center gap-3 text-base text-primary-400"
+									[pTooltip]="feature.description"
+									tooltipPosition="top"
+								>
 									<i class="pi pi-check-circle text-emerald-500" aria-hidden="true"></i>
-									<span>{{ benefit }}</span>
+									<span class="cursor-help border-b border-dashed border-primary-300">{{
+										feature.key | splitAndCapitalize
+									}}</span>
+								</li>
+							}
+							@for (feature of plan.limitedFeatures; track feature.id) {
+								<li
+									class="flex items-center gap-3 text-base text-primary-400"
+									[pTooltip]="feature.description"
+									tooltipPosition="top"
+								>
+									<i class="pi pi-check-circle text-emerald-500" aria-hidden="true"></i>
+									<span class="cursor-help border-b border-dashed border-primary-300"
+										>{{ feature.key | splitAndCapitalize }}: {{ feature.limit }}</span
+									>
 								</li>
 							}
 						</ul>
 					</article>
 				</p-card>
+			}
+
+			@if (loading()) {
+				@for (i of [1, 2, 3]; track i) {
+					<p-card
+						class="h-full border border-surface-200 shadow-none"
+						[pt]="{ body: { class: 'h-full p-6 sm:p-7' } }"
+					>
+						<article class="flex h-full flex-col gap-4">
+							<p-skeleton styleClass="!w-1/2 !h-8" />
+							<p-skeleton styleClass="!w-full !h-4" />
+							<p-skeleton styleClass="!w-1/3 !h-10" />
+							<div class="mt-4 space-y-3">
+								<p-skeleton styleClass="!w-full !h-4" />
+								<p-skeleton styleClass="!w-full !h-4" />
+								<p-skeleton styleClass="!w-full !h-4" />
+							</div>
+						</article>
+					</p-card>
+				}
 			}
 		</div>
 	</div>
