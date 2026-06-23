@@ -1,19 +1,23 @@
-import { FormGroup, FormsModule, Validators, FormBuilder, AbstractControl } from '@angular/forms'; // ضيفي AbstractControl هنا
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { ColorPickerModule } from 'primeng/colorpicker';
 import { MessageModule } from 'primeng/message';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { AccordionModule } from 'primeng/accordion';
+import emailjs from '@emailjs/browser';
+import { Button } from "primeng/button";
+import { environment } from '../../../../../environments/environment';
+
+const EMAILJS_SERVICE_ID = environment.emailjs.serviceId;
+const EMAILJS_TEMPLATE_ID = environment.emailjs.templateId;
+const EMAILJS_PUBLIC_KEY = environment.emailjs.publicKey;
 
 @Component({
     selector: 'app-have-questions',
-    imports: [FloatLabelModule, InputTextModule, FormsModule, TextareaModule, ColorPickerModule, MessageModule, ToastModule, ButtonModule, ReactiveFormsModule, AccordionModule],
+    imports: [FloatLabelModule, InputTextModule, TextareaModule, MessageModule, ToastModule, ReactiveFormsModule, Button],
     templateUrl: './HaveQuestionsSection.component.html',
     styleUrl: './HaveQuestionsSection.component.css',
     standalone: true,
@@ -31,14 +35,46 @@ export class HaveQuestionsComponent {
     });
 
     public formSubmitted = false;
+    public readonly isSending = signal(false);
 
     public Submit(): void {
         this.formSubmitted = true;
-        if (this.sendQuestion.valid) {
-            this._messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });
-            this.sendQuestion.reset();
-            this.formSubmitted = false;
-        }
+
+        if (this.sendQuestion.invalid) return;
+
+        this.isSending.set(true);
+
+        const { username, email, message } = this.sendQuestion.value as { username: string; email: string; message: string };
+
+        const templateParams = {
+            name: username,
+            email: email,
+            message: message,
+        };
+
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY)
+            .then(() => {
+                this._messageService.add({
+                    severity: 'success',
+                    summary: 'Sent!',
+                    detail: 'Your message has been sent successfully.',
+                    life: 3000,
+                });
+                this.sendQuestion.reset();
+                this.formSubmitted = false;
+            })
+            .catch(() => {
+                this._messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to send message. Please try again.',
+                    life: 3000,
+                });
+            })
+            .finally(() => {
+                this.isSending.set(false);
+            });
     }
 
     public isInvalid(controlName: string): boolean {
