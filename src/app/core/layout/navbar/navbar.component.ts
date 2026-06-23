@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, output, signal, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -14,14 +14,29 @@ import { AuthStore } from '../../auth/store/auth.store';
 	imports: [MenubarModule, ButtonModule, CommonModule, RouterLink],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavbarComponent {
+export class NavbarComponent implements AfterViewInit {
 	public readonly authStore = inject(AuthStore);
 	private readonly _authService = inject(AuthService);
 
-	public currentUser = this.authStore.currentUser;
+	protected currentUser = this.authStore.currentUser;
 
 	private readonly _scrollPosition = signal(0);
 	public readonly isScrolled = signal(false);
+
+	public readonly navbarHeight = output<number>();
+
+	// eslint-disable-next-line @angular-eslint/prefer-signals
+	@ViewChild('navbar')
+	private readonly _navbar!: ElementRef<HTMLElement>;
+
+
+	public ngAfterViewInit(): void {
+		this.navbarHeight.emit(this._navbar.nativeElement.offsetHeight);
+	}
+
+	
+
+
 
 	public constructor() {
 		effect(() => {
