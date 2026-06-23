@@ -20,8 +20,8 @@
 
 						<div class="mt-7 flex items-end gap-1">
 							<!-- <span class="pb-2 text-sm font-medium text-primary-400">EGP</span> -->
-							<p class="text-6xl font-semibold leading-none text-primary">
-								{{ plan.price | currency: 'EGP' : 'symbol-narrow' : '1.0-2' }}
+							<p class="text-5xl font-semibold leading-none text-primary">
+								{{ plan.price.amount | currency: plan.price.currency : 'symbol-narrow' : '1.0-2' }}
 							</p>
 							<span class="pb-1 text-base font-medium text-primary-300"
 								>/{{ plan.planPeriodTime }}</span

@@ -1,19 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { PlansSectionComponent } from './plans-section.component';
-import { PricingService } from '../../services/pricing.service';
-import { Plan } from '../../models/plan.model';
 import { PlanPeriodTime } from '../../models/plan-period-time.enum';
+import { Plan } from '../../models/plan.model';
+import { PricingService } from '../../services/pricing.service';
+import { PlansSectionComponent } from './plans-section.component';
 
 const mockPlans: readonly Plan[] = [
 	{
 		id: '1',
 		name: 'Starter',
 		description: 'Basic plan',
-		price: 99,
+		price: {
+			amount: 99,
+			currency: 'EGP',
+		},
 		planPeriodTime: PlanPeriodTime.Monthly,
 		planContent: 'Basic features',
 		limitedFeatures: [],
