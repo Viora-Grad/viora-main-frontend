@@ -31,7 +31,4 @@ export class SettingsPage implements OnInit {
 
     protected readonly activeNav = signal('personal-info');
 
-    // protected changeNav(route: string) {
-    //     this.activeNav.set(route);
-    // }
 }
