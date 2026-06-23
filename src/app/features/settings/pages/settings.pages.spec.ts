@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SettingsPage } from './settings.pages';
+import { provideRouter } from '@angular/router';
 
 describe('SettingsPage', () => {
   let component: SettingsPage;
@@ -7,9 +8,8 @@ describe('SettingsPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        SettingsPage,
-      ]
+      imports: [SettingsPage],
+       providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SettingsPage);
