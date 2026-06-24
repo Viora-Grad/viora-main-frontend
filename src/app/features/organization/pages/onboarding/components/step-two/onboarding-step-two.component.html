@@ -1,0 +1,88 @@
+<form [formGroup]="servicesForm" (ngSubmit)="onContinue()" class="space-y-5 w-full">
+	<!-- Header -->
+	<div class="mb-8">
+		<h2 class="text-[28px] font-extrabold text-[#201335] tracking-tight mb-2">
+			Organization Services
+		</h2>
+		<p class="text-[15px] text-gray-500 font-medium leading-relaxed">
+			Select the services your organization provides.
+		</p>
+	</div>
+
+	<!-- Service Types -->
+	<div class="space-y-1.5">
+		<label
+			class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+			for="onboarding-service-types"
+			>SERVICE TYPES</label
+		>
+		<p-multiSelect
+			id="onboarding-service-types"
+			formControlName="serviceTypes"
+			[options]="serviceTypeOptions()"
+			placeholder="Select service types"
+			display="chip"
+			styleClass="w-full"
+			panelStyleClass="rounded-xl"
+			[showClear]="true"
+		/>
+		@if (serviceTypesControl.touched && serviceTypesControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">
+				Please select at least one service type.
+			</p>
+		}
+	</div>
+
+	<!-- Service Description -->
+	<div class="space-y-1.5">
+		<label
+			class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+			for="onboarding-service-description"
+			>SERVICE DESCRIPTION</label
+		>
+		<textarea
+			id="onboarding-service-description"
+			pTextarea
+			formControlName="serviceDescription"
+			placeholder="Describe your services in detail"
+			rows="4"
+			class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all resize-none"
+		></textarea>
+		@if (serviceDescriptionControl.touched && serviceDescriptionControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">Service description is required.</p>
+		}
+	</div>
+
+	<!-- Buttons Row -->
+	<div class="grid grid-cols-3 gap-3 mt-3 w-full">
+		@if (onboardingStore.currentStep() > 1) {
+			<div>
+				<p-button
+					type="button"
+					[size]="'large'"
+					[rounded]="false"
+					[raised]="true"
+					[outlined]="true"
+					severity="secondary"
+					styleClass="w-full !bg-white !border-gray-200 hover:!bg-gray-50 !rounded-xl !py-3.5"
+					(click)="onboardingStore.prevStep()"
+				>
+					<i class="pi pi-arrow-left mr-2 text-sm font-bold"></i>
+					<span class="font-semibold text-[15px]">Back</span>
+				</p-button>
+			</div>
+		}
+		<div class="col-span-2">
+			<p-button
+				type="submit"
+				[size]="'large'"
+				[rounded]="false"
+				[raised]="true"
+				styleClass="w-full !bg-[#201335] !border-[#201335] hover:!bg-[#2d1a4a] !rounded-xl !py-3.5"
+			>
+				<span class="font-semibold text-[15px]">Next: Additional Info</span>
+				<i class="pi pi-arrow-right ml-2 text-sm font-bold"></i>
+			</p-button>
+		</div>
+	</div>
+</form>
