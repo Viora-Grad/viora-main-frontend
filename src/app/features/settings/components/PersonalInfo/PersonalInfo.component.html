@@ -1,0 +1,61 @@
+<p class="text-xl font-bold">Personal Info</p>
+<p class="text-gray-400 text-sm mb-4">Update your profile details.</p>
+
+<p-toast/>
+<form [formGroup]="changeInfoForm" (ngSubmit)="onSave()" class="mx-1">
+    <div class="form-row">
+        <!-- First Name -->
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input pInputText id="firstName" formControlName="firstName"[invalid]="!changeInfoForm.get('firstName')?.valid && changeInfoForm.get('firstName')?.dirty" />
+            @if (changeInfoForm.get('firstName')?.invalid &&
+            changeInfoForm.get('firstName')?.dirty) {
+            <small class="text-red-500">First name is required</small>
+            }
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input pInputText id="lastName" formControlName="lastName"
+                [invalid]="!changeInfoForm.get('lastName')?.valid && changeInfoForm.get('lastName')?.dirty" />
+            @if (changeInfoForm.get('lastName')?.invalid &&
+            changeInfoForm.get('lastName')?.dirty)
+            {
+            <small class="text-red-500">Last name is required</small>
+            }
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input pInputText id="email" formControlName="email" type="email"
+            [invalid]="!changeInfoForm.get('email')?.valid && changeInfoForm.get('email')?.dirty" />
+        @if (changeInfoForm.get('email')?.invalid &&
+        changeInfoForm.get('email')?.dirty) {
+        <small class="text-red-500">Enter a valid email</small>
+        }
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="form-group">
+        <label for="dateOfBirth"> Date of Birth
+        </label>
+        <p-datepicker formControlName="dateOfBirth" [showIcon]="true"
+            inputId="dateOfBirth" [showOnFocus]="false" />
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+        <label for="gender">Gender</label>
+        <p-select id="gender" [options]="genderOptions" formControlName="gender"
+            placeholder="Select Gender" class="w-full" />
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+        <p-button label="Cancel" type="button" severity="secondary" (onClick)="onCancel()" />
+        <p-button label="Save Changes" type="submit" severity="primary" [loading]="saving()" (onClick)="onSave()" />
+    </div>
+</form>
