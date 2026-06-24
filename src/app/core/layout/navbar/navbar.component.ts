@@ -47,7 +47,7 @@ export class NavbarComponent {
 		},
 		{
 			label: 'Contact',
-			routerLink: '#',
+			routerLink: '/contact',
 		},
 	];
 
