@@ -1,0 +1,48 @@
+<p-toast />
+<div class="min-h-screen flex items-center justify-center p-4 bg-gray-50/50">
+	<div class="w-full max-w-lg">
+		<!-- Header -->
+		<div class="mb-8">
+			<p class="text-[11px] font-bold text-gray-400 tracking-[0.15em] uppercase mb-3">Onboarding</p>
+			<div class="flex items-center justify-between">
+				<h1 class="text-[32px] font-extrabold text-[#201335] tracking-tight">
+					Onboarding Application
+				</h1>
+				<span class="text-[13px] font-semibold text-gray-400">
+					Step {{ onboardingStore.currentStep() }} of {{ onboardingStore.totalSteps() }}
+				</span>
+			</div>
+			<!-- Progress Bar -->
+			<div class="mt-4 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+				<div
+					class="h-full bg-[#201335] rounded-full transition-all duration-500 ease-in-out"
+					[class.w-1/3]="onboardingStore.currentStep() === 1"
+					[class.w-2/3]="onboardingStore.currentStep() === 2"
+					[class.w-full]="onboardingStore.isLastStep()"
+				></div>
+			</div>
+		</div>
+
+		<!-- Card -->
+		<div
+			class="bg-white rounded-3xl p-8 sm:p-10 shadow-[0_2px_40px_rgba(0,0,0,0.04)] border border-gray-100"
+		>
+			@switch (onboardingStore.currentStep()) {
+				@case (1) {
+					<app-onboarding-step-one />
+				}
+				@case (2) {
+					<app-onboarding-step-two />
+				}
+				@case (3) {
+					<app-onboarding-step-three />
+				}
+			}
+		</div>
+
+		<!-- Footer -->
+		<p class="text-center text-[12px] text-gray-400 mt-6 font-medium">
+			By submitting, you agree to our Terms of Service and Privacy Policy.
+		</p>
+	</div>
+</div>
