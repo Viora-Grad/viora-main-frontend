@@ -9,6 +9,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { vi } from 'vitest';
+import emailjs from '@emailjs/browser';
 
 describe('HaveQuestionsComponent', () => {
   let component: HaveQuestionsComponent;
@@ -66,7 +67,9 @@ describe('HaveQuestionsComponent', () => {
     expect(control?.errors?.['email']).toBe(true);
   });
 
-  it('should submit form and reset if valid', () => {
+  it('should submit form and reset if valid', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    vi.spyOn(emailjs, 'send').mockResolvedValue({ status: 200, text: 'OK' });
     const addSpy = vi.spyOn(messageService, 'add');
 
     component.sendQuestion.setValue({
@@ -79,13 +82,15 @@ describe('HaveQuestionsComponent', () => {
 
     component.Submit();
 
+    await new Promise(resolve => setTimeout(resolve, 0));
+
     expect(addSpy).toHaveBeenCalled();
 
     expect(addSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         severity: 'success',
-        summary: 'Success',
-        detail: 'Form Submitted',
+        summary: 'Sent!',
+        detail: 'Your message has been sent successfully.',
       })
     );
 
