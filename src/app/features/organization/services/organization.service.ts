@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Country } from '../../../core/models/country.model';
+import { Application } from '../models/application.model';
 import { OrganizationApi } from '../apis/organization.api';
 import { OnboardingRequest } from '../apis/dtos/onboarding-request.dto';
 
@@ -24,7 +25,21 @@ export class OrganizationService {
 		return this._organizationApi.checkOrganizationExists(name);
 	}
 
-	public getApplication(): Observable<unknown> {
+	public getApplication(): Observable<Application> {
 		return this._organizationApi.getApplication();
+	}
+
+	public uploadDocument(
+		applicationId: string,
+		documentType: number,
+		file: File,
+		officialName: string,
+		expiryDateUtc: string,
+	): Observable<void> {
+		return this._organizationApi.uploadDocument(applicationId, documentType, file, officialName, expiryDateUtc);
+	}
+
+	public downloadDocument(documentId: string): Observable<Blob> {
+		return this._organizationApi.downloadDocument(documentId);
 	}
 }
