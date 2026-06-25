@@ -1,0 +1,20 @@
+:host ::ng-deep .p-panelmenu-panel {
+    border: none !important;
+}
+
+:host ::ng-deep .p-panelmenu-submenu-icon {
+    order: 3;
+    margin-left: auto !important;
+}
+
+:host ::ng-deep .p-panelmenu-header-label {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    font-weight: inherit;
+
+}
+
+:host ::ng-deep .p-panelmenu-item-label {
+    font-size: clamp(0.8rem, 1.2vw, 0.875rem);
+    font-weight: inherit;
+
+}

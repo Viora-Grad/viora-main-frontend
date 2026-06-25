@@ -1,0 +1,272 @@
+@if (isLoading()) {
+	<div class="flex items-center justify-center py-20">
+		<p-progressSpinner strokeWidth="4" />
+	</div>
+} @else if (error()) {
+	<div class="text-center py-20">
+		<i class="pi pi-exclamation-circle text-4xl text-gray-300 mb-4"></i>
+		<p class="text-gray-500 font-medium">{{ error() }}</p>
+	</div>
+} @else if (application(); as data) {
+	<p-toast />
+	<!-- Status Bar -->
+	<div class="flex items-center justify-between p-5 rounded-2xl bg-gray-50 border border-gray-100 mb-8">
+		<div class="flex items-center gap-4">
+			<div class="w-12 h-12 rounded-xl bg-[#201335] flex items-center justify-center">
+				<i class="pi pi-building text-white text-xl"></i>
+			</div>
+			<div>
+				<h2 class="text-lg font-bold text-[#201335]">{{ data.name }}</h2>
+				<p class="text-[13px] text-gray-400 font-medium">Submitted {{ data.submittedOnUtc | date:'mediumDate' }}</p>
+			</div>
+		</div>
+		<div class="flex items-center gap-3">
+			@if (data.expiryDateUtc) {
+				<div class="text-right hidden sm:block">
+					<p class="text-[11px] text-gray-400 font-bold tracking-wider uppercase">Expires</p>
+					<p class="text-[13px] text-gray-600 font-semibold">{{ data.expiryDateUtc | date:'mediumDate' }}</p>
+				</div>
+			}
+			<p-tag [value]="data.status" [severity]="getStatusSeverity(data.status)" styleClass="!text-[13px] !font-bold !px-4 !py-1.5 !rounded-lg" />
+		</div>
+	</div>
+
+	<!-- Rejection Reason -->
+	@if (data.status === 'Rejected' && data.rejectedByName) {
+		<div class="p-5 rounded-2xl bg-red-50 border border-red-100 mb-8">
+			<div class="flex items-center gap-2 mb-2">
+				<i class="pi pi-times-circle text-red-500"></i>
+				<p class="text-[13px] font-bold text-red-700 uppercase tracking-wider">Rejected by {{ data.rejectedByName }}</p>
+			</div>
+		</div>
+	}
+
+	<!-- Details Grid -->
+	<div class="space-y-8">
+		<!-- Organization Details -->
+		<section>
+			<h3 class="text-[11px] font-extrabold text-gray-400 tracking-[0.15em] uppercase mb-4">Organization Details</h3>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Owner</p>
+					<p class="text-[15px] text-gray-700 font-medium">{{ data.ownerName }}</p>
+				</div>
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Organization Name</p>
+					<p class="text-[15px] text-gray-700 font-medium">{{ data.name }}</p>
+				</div>
+			</div>
+			<div class="mt-5 space-y-1">
+				<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">About</p>
+				<p class="text-[15px] text-gray-700 font-medium leading-relaxed">{{ data.about }}</p>
+			</div>
+		</section>
+
+		<!-- Services -->
+		<section>
+			<h3 class="text-[11px] font-extrabold text-gray-400 tracking-[0.15em] uppercase mb-4">Services</h3>
+			<div class="space-y-4">
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Services Provided</p>
+					<div class="flex flex-wrap gap-2 mt-2">
+						@for (service of data.servicesProvided; track service) {
+							<p-chip [label]="service" styleClass="!bg-[#201335] !text-white !text-[13px] !font-medium !rounded-lg" />
+						}
+					</div>
+				</div>
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Service Description</p>
+					<p class="text-[15px] text-gray-700 font-medium leading-relaxed">{{ data.serviceDescription }}</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Additional Info -->
+		<section>
+			<h3 class="text-[11px] font-extrabold text-gray-400 tracking-[0.15em] uppercase mb-4">Additional Info</h3>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Application Note</p>
+					<p class="text-[15px] text-gray-700 font-medium leading-relaxed">{{ data.letter }}</p>
+				</div>
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Referral Source</p>
+					<p class="text-[15px] text-gray-700 font-medium">{{ data.referralSource }}</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<section>
+			<h3 class="text-[11px] font-extrabold text-gray-400 tracking-[0.15em] uppercase mb-4">Contact</h3>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Billing Email</p>
+					<p class="text-[15px] text-gray-700 font-medium">{{ data.billingEmail }}</p>
+				</div>
+				<div class="space-y-1">
+					<p class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Support Email</p>
+					<p class="text-[15px] text-gray-700 font-medium">{{ data.supportEmail }}</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Documents -->
+		<section>
+			<h3 class="text-[11px] font-extrabold text-gray-400 tracking-[0.15em] uppercase mb-4">Documents</h3>
+			<div class="space-y-3">
+				@for (doc of documentTypes; track doc.value) {
+					<div class="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-white hover:bg-gray-50/50 transition-all">
+						<div class="flex items-center gap-3">
+							@if (getDoc(doc); as docData) {
+								<div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+									<i class="pi pi-file-pdf text-green-600 text-lg"></i>
+								</div>
+							<div>
+								<p class="text-[14px] text-gray-700 font-semibold">{{ doc.label }}</p>
+								<p class="text-[12px] text-gray-400 font-medium">{{ docData.name }}</p>
+								<p class="text-[12px] text-gray-400 font-medium">Expires: {{ formatDate(docData.expiryDateUtc) }}</p>
+							</div>
+							} @else {
+								<div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+									<i class="pi pi-file text-gray-400 text-lg"></i>
+								</div>
+								<div>
+									<p class="text-[14px] text-gray-700 font-semibold">{{ doc.label }}</p>
+									<p class="text-[12px] text-gray-400 font-medium">Not uploaded</p>
+								</div>
+							}
+						</div>
+						<div>
+							@if (getDoc(doc)) {
+								<p-button
+									label="Download"
+									icon="pi pi-download"
+									size="small"
+									[rounded]="true"
+									[outlined]="true"
+									styleClass="!text-[13px] !font-semibold"
+									(click)="downloadDocument(doc)"
+								/>
+							} @else {
+								<p-button
+									label="Upload"
+									icon="pi pi-upload"
+									size="small"
+									[rounded]="true"
+									[outlined]="true"
+									styleClass="!text-[13px] !font-semibold"
+									(click)="openUploadDialog(doc)"
+								/>
+							}
+						</div>
+					</div>
+				}
+			</div>
+		</section>
+	</div>
+
+	<!-- Upload Dialog -->
+	<p-dialog
+		[visible]="dialogVisible()"
+		(onHide)="dialogVisible.set(false)"
+		[modal]="true"
+		[style]="{ width: '480px' }"
+		styleClass="rounded-2xl"
+		headerStyleClass="!px-6 !pt-6 !pb-0"
+		contentStyleClass="!px-6 !pb-6 !pt-4"
+	>
+		<form [formGroup]="uploadForm" (ngSubmit)="onSubmitUpload()" class="space-y-5">
+			<p class="text-[15px] text-gray-500 font-medium">
+				Upload <span class="font-bold text-[#201335]">{{ selectedDocType()?.label }}</span>
+			</p>
+
+			<!-- File Picker -->
+			<div class="space-y-1.5">
+				<label class="block text-[11px] font-extrabold text-gray-600 tracking-wider">FILE</label>
+				<label
+					class="flex items-center justify-center gap-3 w-full border-2 border-dashed border-gray-200 rounded-xl py-6 px-4 cursor-pointer hover:border-purple-300 hover:bg-purple-50/30 transition-all"
+					for="upload-file-input"
+				>
+					@if (selectedFile()) {
+						<i class="pi pi-file-pdf text-green-500 text-xl"></i>
+						<span class="text-[14px] text-gray-700 font-medium">{{ selectedFile()!.name }}</span>
+					} @else {
+						<i class="pi pi-cloud-upload text-gray-300 text-2xl"></i>
+						<span class="text-[14px] text-gray-400 font-medium">Click to select a PDF file</span>
+					}
+				</label>
+				<input
+					type="file"
+					id="upload-file-input"
+					class="hidden"
+					accept=".pdf"
+					(change)="onFileChange($event)"
+				/>
+			</div>
+
+			<!-- Official Name -->
+			<div class="space-y-1.5">
+				<label
+					class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+					for="upload-official-name"
+					>OFFICIAL NAME</label
+				>
+				<input
+					id="upload-official-name"
+					type="text"
+					pInputText
+					formControlName="officialName"
+					placeholder="e.g. Article of Association"
+					class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
+				/>
+				@if (officialNameControl.touched && officialNameControl.invalid) {
+					<p class="text-[12px] text-red-500 font-medium mt-1">Official name is required.</p>
+				}
+			</div>
+
+			<!-- Expiry Date -->
+			<div class="space-y-1.5">
+				<label
+					class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+					for="upload-expiry-date"
+					>EXPIRY DATE</label
+				>
+				<p-datePicker
+					id="upload-expiry-date"
+					formControlName="expiryDate"
+					dateFormat="dd/mm/yy"
+					[showIcon]="true"
+					[showOnFocus]="false"
+					placeholder="dd/mm/yyyy"
+					styleClass="w-full"
+					inputStyleClass="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
+				/>
+				@if (expiryDateControl.touched && expiryDateControl.invalid) {
+					<p class="text-[12px] text-red-500 font-medium mt-1">Expiry date is required.</p>
+				}
+			</div>
+		</form>
+
+		<ng-template #footer>
+			<div class="flex justify-end gap-3">
+				<p-button
+					label="Cancel"
+					[rounded]="true"
+					[outlined]="true"
+					severity="secondary"
+					styleClass="!text-[13px] !font-semibold"
+					(click)="dialogVisible.set(false)"
+				/>
+				<p-button
+					label="Upload"
+					icon="pi pi-upload"
+					[rounded]="true"
+					[loading]="uploadingDoc()"
+					styleClass="!bg-[#201335] !border-[#201335] hover:!bg-[#2d1a4a] !text-[13px] !font-semibold"
+					(click)="onSubmitUpload()"
+				/>
+			</div>
+		</ng-template>
+	</p-dialog>
+}

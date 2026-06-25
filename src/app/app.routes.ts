@@ -19,10 +19,24 @@ export const routes: Routes = [
 			import('./features/about-us/about-us.routes').then((m) => m.ABOUT_US_ROUTES),
 	},
 	{
+		path: 'organization',
+		loadChildren: () =>
+			import('./features/organization/organization.routes').then(
+				(m) => m.ORGANIZATION_ROUTES,
+			),
+	},
+	{
 		path: 'auth',
 		loadChildren: () =>
 			import('./features/authentication/authentication.routes').then(
 				(m) => m.AUTHENTICATION_ROUTES,
+			),
+	},
+	{
+		path: 'settings',
+		loadChildren: () =>
+			import('./features/settings/settings.routes').then(
+				(m) => m.SETTINGS_ROUTES,
 			),
 	},
 	{

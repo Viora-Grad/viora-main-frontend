@@ -1,4 +1,4 @@
-<div [ngClass]="isScrolled() ? 'navbar-scrolled' : 'navbar-transparent'">
+<div #navbar [ngClass]="isScrolled() ? 'navbar-scrolled' : 'navbar-transparent'">
 	<div class="card">
 		<p-menubar [model]="items">
 			<ng-template pTemplate="start">
@@ -11,25 +11,21 @@
 			<ng-template pTemplate="end">
 				<div class="flex items-center">
 					@if (authStore.isAuthenticated()) {
-						<span class="text-sm font-medium text-gray-700 mr-3">
-							{{ currentUser()?.firstName ?? 'User' }}
-						</span>
+						<p-button [label]="(currentUser()?.firstName ?? '') + ' ' + (currentUser()?.lastName ?? '')" routerLink="/settings" variant="text"/>
 						<p-button type="button" label="Logout" severity="secondary" (click)="onLogout()" />
 					} @else {
-						<a routerLink="/auth/register" class="no-underline">
-							<p-button
-								type="button"
-								label="Register"
-								severity="contrast"
-							/>
-						</a>
-						<a routerLink="/auth/login" class="no-underline mx-3">
-							<p-button
-								type="button"
-								label="Login"
-								severity="secondary"
-							/>
-						</a>
+					<a routerLink="/auth/register" class="no-underline">
+						<p-button
+							type="button"
+							label="Register"
+							severity="contrast" />
+					</a>
+					<a routerLink="/auth/login" class="no-underline mx-3">
+						<p-button
+							type="button"
+							label="Login"
+							severity="secondary" />
+					</a>
 					}
 				</div>
 			</ng-template>

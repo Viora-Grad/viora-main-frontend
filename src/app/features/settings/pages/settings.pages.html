@@ -1,0 +1,40 @@
+
+<div class="container mx-auto mb-10">
+  <p-splitter [panelSizes]="isSmallScreen() ? [40, 60] : isMediumScreen() ? [35, 65] : [25, 75]"  >
+
+    <!-- ── Sidebar ── -->
+    <ng-template #panel>
+      <app-side-bar (activeNav)="activeNav.set($event)" />
+    </ng-template>
+
+    <!-- ── Main content ── -->
+    <ng-template #panel>
+      <section class="p-8">
+        <router-outlet />
+
+        <!-- @switch (activeNav()) {
+
+        @case ('personal-info') {
+        <app-personal-info />
+        }
+
+
+        @case('change-password'){
+        <app-change-password />
+        }
+
+        @case ('organization') {
+        <app-organization />
+        }
+
+        @case ('subscription') {
+        <app-subscription />
+        }
+
+        } -->
+
+      </section>
+    </ng-template>
+
+  </p-splitter>
+</div>
