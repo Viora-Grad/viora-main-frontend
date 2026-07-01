@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, model, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 
@@ -15,7 +15,7 @@ import { DialogModule } from 'primeng/dialog';
 			styleClass="subscribe-confirm-dialog"
 		>
 			<div class="flex flex-col gap-2">
-				<p>Do you want to subscribe to <strong>{{ planName }}</strong> for <strong>{{ organizationName }}</strong>?</p>
+				<p>Do you want to subscribe to <strong>{{ planName() }}</strong> for <strong>{{ organizationName() }}</strong>?</p>
 			</div>
 			<ng-template pTemplate="footer">
 				<p-button label="Cancel" severity="secondary" [text]="true" (click)="visible.set(false)" />
@@ -27,9 +27,9 @@ import { DialogModule } from 'primeng/dialog';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscribeConfirmDialogComponent {
-	visible = model.required<boolean>();
-	@Input({ required: true }) planName = '';
-	@Input({ required: true }) organizationName = '';
+	public readonly visible = model.required<boolean>();
+	public readonly planName = input.required<string>();
+	public readonly organizationName = input.required<string>();
 
-	@Output() confirm = new EventEmitter<void>();
+	public readonly confirm = output<void>();
 }
