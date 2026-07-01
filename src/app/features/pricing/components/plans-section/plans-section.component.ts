@@ -5,7 +5,7 @@ import { CardModule } from 'primeng/card';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, filter, switchMap, tap, throwError } from 'rxjs';
 import { SplitAndCapitalizePipe } from '../../pipes/split-and-capitalize.pipe';
 import { Plan } from '../../models/plan.model';
 import { PricingService } from '../../services/pricing.service';
@@ -78,10 +78,22 @@ export class PlansSectionComponent implements OnInit {
 	public onDialogConfirm(): void {
 		this.dialogVisible.set(false);
 
-		this._orderService.createSubscription({
-			organizationId: this._organizationId,
-			planId: this._selectedPlanId,
-		}).pipe(
+		this._orderService.getSubscriptions(this._organizationId).pipe(
+			tap((subscriptions) => {
+				const hasActive = subscriptions.some((s) => s.status === 'Active');
+				if (hasActive) {
+					this._messageService.add({
+						severity: 'warn',
+						summary: 'Active Subscription',
+						detail: 'A subscription is already active for this organization.',
+					});
+				}
+			}),
+			filter((subscriptions) => !subscriptions.some((s) => s.status === 'Active')),
+			switchMap(() => this._orderService.createSubscription({
+				organizationId: this._organizationId,
+				planId: this._selectedPlanId,
+			})),
 			switchMap((orderId) => this._orderService.getPaymentSession(orderId)),
 		).subscribe({
 			next: (response) => {

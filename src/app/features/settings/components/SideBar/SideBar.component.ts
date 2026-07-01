@@ -45,11 +45,11 @@ export class SideBarComponent implements OnInit {
 						icon: 'pi pi-file-edit',
 						routerLink: '/settings/organization/application',
 					},
-					// {
-					//     label: 'Subscription',
-					//     icon: 'pi pi-credit-card',
-					//     routerLink: '/settings/organization/subscription',
-					// },
+					{
+						label: 'Subscription',
+						icon: 'pi pi-credit-card',
+						routerLink: '/settings/organization/subscription',
+					},
 				],
 			},
 		];
