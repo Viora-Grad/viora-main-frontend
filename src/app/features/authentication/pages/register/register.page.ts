@@ -22,7 +22,7 @@ import { RegisterStore } from './store/register.store';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterPage implements OnInit {
-	private static readonly GOOGLE_AUTH_CODE_KEY = 'google_auth_code';
+	private static readonly _googleAuthCodeKey = 'google_auth_code';
 
 	protected readonly registerStore = inject(RegisterStore);
 	private readonly _authService = inject(AuthService);
@@ -30,11 +30,11 @@ export class RegisterPage implements OnInit {
 	private readonly _router = inject(Router);
 
 	public ngOnInit(): void {
-		const googleAuthCode = sessionStorage.getItem(RegisterPage.GOOGLE_AUTH_CODE_KEY);
+		const googleAuthCode = sessionStorage.getItem(RegisterPage._googleAuthCodeKey);
 
 		if (!googleAuthCode) return;
 
-		sessionStorage.removeItem(RegisterPage.GOOGLE_AUTH_CODE_KEY);
+		sessionStorage.removeItem(RegisterPage._googleAuthCodeKey);
 
 		this._authService.validateGoogleAccount(googleAuthCode).subscribe({
 			next: (response) => {

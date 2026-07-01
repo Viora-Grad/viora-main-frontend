@@ -1,9 +1,10 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Country } from '../../../core/models/country.model';
 import { Application } from '../models/application.model';
+import { Organization } from '../models/organization.model';
 import { OnboardingRequest } from './dtos/onboarding-request.dto';
 
 @Injectable({ providedIn: 'root' })
@@ -48,6 +49,10 @@ export class OrganizationApi {
 		formData.append('OfficialName', officialName);
 		formData.append('ExpiryDateUtc', expiryDateUtc);
 		return this._http.post<void>(`${this._baseUrl}/LegalPapers`, formData);
+	}
+
+	public getOrganization(): Observable<Organization> {
+		return this._http.get<Organization>(`${this._baseUrl}/Organizations/me`);
 	}
 
 	public downloadDocument(documentId: string): Observable<Blob> {

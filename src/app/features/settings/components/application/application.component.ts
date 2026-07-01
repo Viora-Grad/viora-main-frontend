@@ -1,22 +1,27 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { DatePickerModule } from 'primeng/datepicker';
-import { InputTextModule } from 'primeng/inputtext';
-import { TagModule } from 'primeng/tag';
 import { ChipModule } from 'primeng/chip';
-import { ToastModule } from 'primeng/toast';
+import { DatePickerModule } from 'primeng/datepicker';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { OrganizationService } from '../../../organization/services/organization.service';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { AuthStore } from '../../../../core/auth/store/auth.store';
 import { Application, ApplicationDocument } from '../../../organization/models/application.model';
+import { Organization } from '../../../organization/models/organization.model';
+import { OrganizationService } from '../../../organization/services/organization.service';
 
 interface DocumentType {
 	label: string;
 	value: number;
-	field: keyof Pick<Application, 'articleOfAssociation' | 'commercialRegistration' | 'registeredAddressProof' | 'taxCard'>;
+	field: keyof Pick<
+		Application,
+		'articleOfAssociation' | 'commercialRegistration' | 'registeredAddressProof' | 'taxCard'
+	>;
 }
 
 @Component({
@@ -40,11 +45,14 @@ interface DocumentType {
 export class ApplicationComponent implements OnInit {
 	private readonly _organizationService = inject(OrganizationService);
 	private readonly _messageService = inject(MessageService);
+	private readonly _authStore = inject(AuthStore);
 
 	protected readonly application = signal<Application | null>(null);
+	protected readonly organizationDetails = signal<Organization | null>(null);
 	protected readonly isLoading = signal(true);
 	protected readonly error = signal<string | null>(null);
 	protected readonly uploadingDoc = signal(false);
+	protected readonly orgLoading = signal(false);
 
 	protected readonly dialogVisible = signal(false);
 	protected readonly selectedDocType = signal<DocumentType | null>(null);
@@ -81,10 +89,26 @@ export class ApplicationComponent implements OnInit {
 			next: (app) => {
 				this.application.set(app);
 				this.isLoading.set(false);
+				if (app.status === 'Accepted') {
+					this._loadOrganizationDetails();
+				}
 			},
 			error: () => {
 				this.error.set('Failed to load application data.');
 				this.isLoading.set(false);
+			},
+		});
+	}
+
+	private _loadOrganizationDetails(): void {
+		this.orgLoading.set(true);
+		this._organizationService.getOrganization().subscribe({
+			next: (org) => {
+				this.organizationDetails.set(org);
+				this.orgLoading.set(false);
+			},
+			error: () => {
+				this.orgLoading.set(false);
 			},
 		});
 	}
@@ -190,9 +214,21 @@ export class ApplicationComponent implements OnInit {
 		});
 	}
 
-	protected getStatusSeverity(status: string): 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast' {
+	protected redirectToOwnerCallback(subDomain: string): void {
+		const refreshToken = this._authStore.refreshToken();
+		if (refreshToken) {
+			window.open(
+				`http://${subDomain}.localhost/auth/owner/callback?refreshToken=${encodeURIComponent(refreshToken)}`,
+				'_blank',
+			);
+		}
+	}
+
+	protected getStatusSeverity(
+		status: string,
+	): 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast' {
 		switch (status) {
-			case 'Approved':
+			case 'Accepted':
 				return 'success';
 			case 'Pending':
 				return 'warn';

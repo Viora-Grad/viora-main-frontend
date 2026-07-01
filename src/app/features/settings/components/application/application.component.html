@@ -16,7 +16,19 @@
 				<i class="pi pi-building text-white text-xl"></i>
 			</div>
 			<div>
-				<h2 class="text-lg font-bold text-[#201335]">{{ data.name }}</h2>
+				<div class="flex items-center gap-2">
+					<h2 class="text-lg font-bold text-[#201335]">{{ data.name }}</h2>
+					@if (organizationDetails(); as org) {
+						<p-button
+							icon="pi pi-external-link"
+							[rounded]="true"
+							[text]="true"
+							size="small"
+							styleClass="!w-[28px] !h-[28px]"
+							(onClick)="redirectToOwnerCallback(org.subDomain)"
+						/>
+					}
+				</div>
 				<p class="text-[13px] text-gray-400 font-medium">Submitted {{ data.submittedOnUtc | date:'mediumDate' }}</p>
 			</div>
 		</div>
@@ -171,8 +183,7 @@
 		[visible]="dialogVisible()"
 		(onHide)="dialogVisible.set(false)"
 		[modal]="true"
-		[style]="{ width: '480px' }"
-		styleClass="rounded-2xl"
+		styleClass="!w-[480px] rounded-2xl"
 		headerStyleClass="!px-6 !pt-6 !pb-0"
 		contentStyleClass="!px-6 !pb-6 !pt-4"
 	>
@@ -183,7 +194,7 @@
 
 			<!-- File Picker -->
 			<div class="space-y-1.5">
-				<label class="block text-[11px] font-extrabold text-gray-600 tracking-wider">FILE</label>
+				<span class="block text-[11px] font-extrabold text-gray-600 tracking-wider">FILE</span>
 				<label
 					class="flex items-center justify-center gap-3 w-full border-2 border-dashed border-gray-200 rounded-xl py-6 px-4 cursor-pointer hover:border-purple-300 hover:bg-purple-50/30 transition-all"
 					for="upload-file-input"

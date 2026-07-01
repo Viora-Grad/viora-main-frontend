@@ -41,9 +41,9 @@ export const AuthStore = signalStore(
 	})),
 
 	withMethods((store) => {
-		let _useLocalStorage = true;
+		let useLocalStorage = true;
 
-		function _getStorage(rememberMe?: boolean): Storage {
+		function getStorage(rememberMe?: boolean): Storage {
 			return rememberMe === false ? sessionStorage : localStorage;
 		}
 
@@ -54,8 +54,8 @@ export const AuthStore = signalStore(
 				refreshToken: string,
 				rememberMe = true,
 			): void {
-				_useLocalStorage = rememberMe;
-				const storage = _getStorage(rememberMe);
+				useLocalStorage = rememberMe;
+				const storage = getStorage(rememberMe);
 				storage.setItem(ACCESS_TOKEN_KEY, accessToken);
 				storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 				localStorage.setItem(REMEMBER_ME_KEY, String(rememberMe));
@@ -68,7 +68,7 @@ export const AuthStore = signalStore(
 				});
 			},
 			updateTokens(accessToken: string, refreshToken: string): void {
-				const storage = _getStorage(_useLocalStorage);
+				const storage = getStorage(useLocalStorage);
 				storage.setItem(ACCESS_TOKEN_KEY, accessToken);
 				storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 				patchState(store, { accessToken, refreshToken });

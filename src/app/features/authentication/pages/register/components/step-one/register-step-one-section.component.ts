@@ -29,7 +29,7 @@ export class RegisterStepOneSectionComponent {
 	private readonly _authService = inject(AuthService);
 	private readonly _messageService = inject(MessageService);
 
-	private static readonly GOOGLE_AUTH_FLOW_KEY = 'google_auth_flow';
+	private static readonly _googleAuthFlowKey = 'google_auth_flow';
 
 	public readonly isSubmitting = signal(false);
 	public readonly completed = output<string>();
@@ -44,7 +44,7 @@ export class RegisterStepOneSectionComponent {
 	}
 
 	public onGoogleLogin(): void {
-		sessionStorage.setItem(RegisterStepOneSectionComponent.GOOGLE_AUTH_FLOW_KEY, 'register');
+		sessionStorage.setItem(RegisterStepOneSectionComponent._googleAuthFlowKey, 'register');
 		this._registerStore.setGoogleSignup(true);
 		void this._googleAuthService.redirectToGoogle();
 	}

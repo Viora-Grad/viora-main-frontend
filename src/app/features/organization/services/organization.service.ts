@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Country } from '../../../core/models/country.model';
 import { Application } from '../models/application.model';
+import { Organization } from '../models/organization.model';
 import { OrganizationApi } from '../apis/organization.api';
 import { OnboardingRequest } from '../apis/dtos/onboarding-request.dto';
 
@@ -23,6 +24,10 @@ export class OrganizationService {
 
 	public checkOrganizationExists(name: string): Observable<boolean> {
 		return this._organizationApi.checkOrganizationExists(name);
+	}
+
+	public getOrganization(): Observable<Organization> {
+		return this._organizationApi.getOrganization();
 	}
 
 	public getApplication(): Observable<Application> {
