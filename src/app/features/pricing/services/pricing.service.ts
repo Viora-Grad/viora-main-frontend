@@ -10,4 +10,8 @@ export class PricingService {
   public getAllPlans(): Observable<Plan[]> {
     return this._pricingApi.getAllPlans();
   }
+
+  public getPlan(planId: string): Observable<Plan> {
+    return this._pricingApi.getPlan(planId);
+  }
 }

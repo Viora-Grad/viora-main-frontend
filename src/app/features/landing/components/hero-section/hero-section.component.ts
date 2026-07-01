@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PrimeIcons } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
@@ -11,7 +12,7 @@ interface Tag {
 
 @Component({
 	selector: 'app-hero-section',
-	imports: [ButtonModule, MessageModule],
+	imports: [ButtonModule, MessageModule, RouterLink],
 	templateUrl: './hero-section.component.html',
 	styleUrl: './hero-section.component.css',
 	changeDetection: ChangeDetectionStrategy.OnPush,

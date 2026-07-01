@@ -80,18 +80,18 @@
 					},
 					"defaultConfiguration": "production"
 				},
-				"serve": {
-					"builder": "@ngx-env/builder:dev-server",
-					"configurations": {
-						"production": {
-							"buildTarget": "viora-main-frontend:build:production"
-						},
-						"development": {
-							"buildTarget": "viora-main-frontend:build:development"
-						}
+			"serve": {
+				"builder": "@ngx-env/builder:dev-server",
+				"configurations": {
+					"production": {
+						"buildTarget": "viora-main-frontend:build:production"
 					},
-					"defaultConfiguration": "development"
+					"development": {
+						"buildTarget": "viora-main-frontend:build:development"
+					}
 				},
+				"defaultConfiguration": "development"
+			},
 				"test": {
 					"builder": "@angular/build:unit-test"
 				},

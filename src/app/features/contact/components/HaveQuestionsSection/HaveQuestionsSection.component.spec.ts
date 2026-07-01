@@ -68,7 +68,6 @@ describe('HaveQuestionsComponent', () => {
   });
 
   it('should submit form and reset if valid', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     vi.spyOn(emailjs, 'send').mockResolvedValue({ status: 200, text: 'OK' });
     const addSpy = vi.spyOn(messageService, 'add');
 
