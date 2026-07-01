@@ -8,7 +8,7 @@ export const noApplicationGuard: CanActivateFn = () => {
 	const router = inject(Router);
 
 	return organizationService.getApplication().pipe(
-		map(() => router.parseUrl('/')),
+		map(() => router.parseUrl('/settings/organization/application')),
 		catchError((err: { status?: number }) => {
 			if (err.status === 404) {
 				return of(true);

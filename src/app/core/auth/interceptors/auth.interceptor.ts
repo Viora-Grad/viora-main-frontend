@@ -1,10 +1,19 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
-import { AuthStore } from '../store/auth.store';
 import { AuthService } from '../services/auth.service';
+import { AuthStore } from '../store/auth.store';
 
-const AUTH_ENDPOINTS = ['/auth/login', '/auth/google', '/auth/refresh', '/auth/logout', '/auth/validate', '/oauth/google/validate', '/auth/register', '/auth/oauth/'];
+const AUTH_ENDPOINTS = [
+	'/auth/login',
+	'/auth/google',
+	'/auth/refresh',
+	'/auth/logout',
+	'/auth/validate',
+	'/oauth/google/validate',
+	'/auth/register',
+	'/auth/oauth/',
+];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 	const authStore = inject(AuthStore);

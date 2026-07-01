@@ -23,9 +23,9 @@
 							<p class="text-5xl font-semibold leading-none text-primary">
 								{{ plan.price.amount | currency: plan.price.currency : 'symbol-narrow' : '1.0-2' }}
 							</p>
-							<span class="pb-1 text-base font-medium text-primary-300"
-								>/{{ plan.planPeriodTime }}</span
-							>
+							<span class="pb-1 text-base font-medium text-primary-300">{{
+								plan.planPeriodTime
+							}}</span>
 						</div>
 
 						<div class="mt-7 border-t border-surface-200 pt-6">
@@ -35,6 +35,7 @@
 								[rounded]="false"
 								[raised]="true"
 								styleClass="w-full !bg-primary !border-primary hover:!bg-primary-700"
+								(click)="onPlanCtaClick(plan)"
 							/>
 						</div>
 
@@ -89,4 +90,11 @@
 			}
 		</div>
 	</div>
+
+	<app-subscribe-confirm-dialog
+		[(visible)]="dialogVisible"
+		[planName]="selectedPlanName()"
+		[organizationName]="organizationName()"
+		(confirm)="onDialogConfirm()"
+	/>
 </section>
