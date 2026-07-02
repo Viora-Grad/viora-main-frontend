@@ -97,7 +97,7 @@ export class AuthService {
 
 		return this._authApi.refreshToken({ refreshToken }).pipe(
 			map((response) => {
-				this._authStore.updateTokens(response.accessToken, response.refreshToken);
+				this._authStore.updateTokens(response.accessToken, refreshToken);
 			}),
 		);
 	}
