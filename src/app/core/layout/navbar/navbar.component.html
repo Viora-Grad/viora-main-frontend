@@ -1,18 +1,23 @@
-<div #navbar [ngClass]="isScrolled() ? 'navbar-scrolled' : 'navbar-transparent'">
+<div #navbar
+	[ngClass]="isScrolled() ? 'navbar-scrolled' : 'navbar-transparent'">
 	<div class="card">
 		<p-menubar [model]="items">
 			<ng-template pTemplate="start">
-				<div class="flex items-center gap-2 px-2">
+				<div class="flex items-center px-3">
 					<!-- Viora Logo -->
-					<span class="text-xl font-bold tracking-tight"><a href="/">Viora</a></span>
+					<img ngSrc="svg/logo.svg" alt="Viora Logo" class="h-8 w-8" width="32" height="32" />
+					<span class="text-2xl font-bold "><a href="/">iora</a></span>
 				</div>
 			</ng-template>
 
 			<ng-template pTemplate="end">
 				<div class="flex items-center">
 					@if (authStore.isAuthenticated()) {
-						<p-button [label]="(currentUser()?.firstName ?? '') + ' ' + (currentUser()?.lastName ?? '')" routerLink="/settings" variant="text"/>
-						<p-button type="button" label="Logout" severity="secondary" (click)="onLogout()" />
+					<p-button
+						[label]="(currentUser()?.firstName ?? '') + ' ' + (currentUser()?.lastName ?? '')"
+						routerLink="/settings" variant="text" />
+					<p-button type="button" label="Logout" severity="secondary"
+						(click)="onLogout()" />
 					} @else {
 					<a routerLink="/auth/register" class="no-underline">
 						<p-button

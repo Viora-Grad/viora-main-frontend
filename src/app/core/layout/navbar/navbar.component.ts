@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, output, signal, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+// import { RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../auth/services/auth.service';
 import { AuthStore } from '../../auth/store/auth.store';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
 	selector: 'app-navbar',
 	templateUrl: './navbar.component.html',
 	styleUrl: './navbar.component.css',
-	imports: [MenubarModule, ButtonModule, CommonModule, RouterLink],
+	imports: [MenubarModule, ButtonModule, CommonModule, NgOptimizedImage],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements AfterViewInit {
