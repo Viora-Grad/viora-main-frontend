@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, output, signal, ViewChild } from '@angular/core';
-// import { RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
@@ -12,7 +12,7 @@ import { NgOptimizedImage } from '@angular/common';
 	selector: 'app-navbar',
 	templateUrl: './navbar.component.html',
 	styleUrl: './navbar.component.css',
-	imports: [MenubarModule, ButtonModule, CommonModule, NgOptimizedImage],
+	imports: [MenubarModule, ButtonModule, CommonModule, NgOptimizedImage, RouterLink],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements AfterViewInit {
