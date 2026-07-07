@@ -120,7 +120,6 @@ export class RegisterStepTwoSectionComponent {
 			lastName,
 			dateOfBirth,
 			gender,
-			googleAuthCode,
 		} = this.registerStore;
 
 		this._authService
@@ -134,7 +133,6 @@ export class RegisterStepTwoSectionComponent {
 					email: email(),
 					providerKey: providerKey()!,
 				},
-				googleAuthCode()!,
 			)
 			.subscribe({
 				next: () => {

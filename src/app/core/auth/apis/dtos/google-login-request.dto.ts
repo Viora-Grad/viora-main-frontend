@@ -1,4 +1,4 @@
 export interface GoogleLoginRequest {
-	code: string;
+	code: string | null;
 	redirectUri: string;
 }

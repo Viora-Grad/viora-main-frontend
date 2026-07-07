@@ -31,7 +31,7 @@ export class AuthService {
 		);
 	}
 
-	public loginWithGoogle(code: string): Observable<void> {
+	public loginWithGoogle(code: string | null = null): Observable<void> {
 		this._authStore.setLoading();
 		return this._authApi.loginWithGoogle({ code, redirectUri: environment.googleRedirectUri }).pipe(
 			tap((response) => {
@@ -78,14 +78,15 @@ export class AuthService {
 	public registerWithOAuth(
 		provider: string,
 		request: OAuthRegisterRequest,
-		googleAuthCode: string,
 	): Observable<void> {
 		request.email = request.email.toLowerCase();
 		request.dateOfBirth = request.dateOfBirth.split('T')[0];
 		this._authStore.setLoading();
-		return this._authApi
-			.registerWithOAuth(provider, request)
-			.pipe(switchMap(() => this.loginWithGoogle(googleAuthCode)));
+		return this._authApi.registerWithOAuth(provider, request).pipe(
+			tap(() => {
+				void this._router.navigate(['/auth/login']);
+			}),
+		);
 	}
 
 	public refreshTokens(): Observable<void> {

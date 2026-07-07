@@ -51,8 +51,8 @@ export class RegisterPage implements OnInit {
 					return;
 				}
 
-				this.registerStore.setGoogleAuthCode(googleAuthCode);
-				this.registerStore.setProviderDetails(response.provider, response.providerKey);
+			this.registerStore.setGoogleAuthCode(googleAuthCode);
+			this.registerStore.setProviderDetails(response.provider, response.providerKey);
 				this.registerStore.setEmail(response.email);
 				this.registerStore.nextStep();
 			},
