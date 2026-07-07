@@ -218,7 +218,7 @@ export class ApplicationComponent implements OnInit {
 		const refreshToken = this._authStore.refreshToken();
 		if (refreshToken) {
 			window.open(
-				`http://${subDomain}.localhost/auth/owner/callback?refreshToken=${encodeURIComponent(refreshToken)}`,
+				`https://${subDomain}.localhost/auth/owner/callback?refreshToken=${encodeURIComponent(refreshToken)}`,
 				'_blank',
 			);
 		}
