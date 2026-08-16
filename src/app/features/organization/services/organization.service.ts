@@ -1,0 +1,50 @@
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Country } from '../../../core/models/country.model';
+import { Application } from '../models/application.model';
+import { Organization } from '../models/organization.model';
+import { OrganizationApi } from '../apis/organization.api';
+import { OnboardingRequest } from '../apis/dtos/onboarding-request.dto';
+
+@Injectable({ providedIn: 'root' })
+export class OrganizationService {
+	private readonly _organizationApi = inject(OrganizationApi);
+
+	public getCountries(): Observable<Country[]> {
+		return this._organizationApi.getCountries();
+	}
+
+	public getServiceTypes(): Observable<string[]> {
+		return this._organizationApi.getServiceTypes();
+	}
+
+	public submitOnboarding(request: OnboardingRequest): Observable<void> {
+		return this._organizationApi.submitOnboarding(request);
+	}
+
+	public checkOrganizationExists(name: string): Observable<boolean> {
+		return this._organizationApi.checkOrganizationExists(name);
+	}
+
+	public getOrganization(): Observable<Organization> {
+		return this._organizationApi.getOrganization();
+	}
+
+	public getApplication(): Observable<Application> {
+		return this._organizationApi.getApplication();
+	}
+
+	public uploadDocument(
+		applicationId: string,
+		documentType: number,
+		file: File,
+		officialName: string,
+		expiryDateUtc: string,
+	): Observable<void> {
+		return this._organizationApi.uploadDocument(applicationId, documentType, file, officialName, expiryDateUtc);
+	}
+
+	public downloadDocument(documentId: string): Observable<Blob> {
+		return this._organizationApi.downloadDocument(documentId);
+	}
+}

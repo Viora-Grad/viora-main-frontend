@@ -1,0 +1,15 @@
+p-accordion-content {
+    text-decoration: wavy;
+    font-size: .9rem;
+    font-style: italic;
+
+}
+
+p-accordion-content * {
+    padding: 0 20px;
+}
+
+p-accordion-header{
+    font-weight: 800;
+    font-size: 1.1rem;
+}

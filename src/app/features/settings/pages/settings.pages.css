@@ -1,0 +1,23 @@
+.nav-item {
+    display:        flex;
+    align-items:    center;
+    gap:            10px;
+    width:          100%;
+    padding:        10px 12px;
+    border:         none;
+    border-radius:  8px;
+    background:     transparent;
+    cursor:         pointer;
+    font-size:      14px;
+    color:          var(--text-color-secondary);
+    transition:     background 0.15s;
+    margin-bottom:  4px;
+}
+
+.nav-item:hover  { background: var(--surface-hover); }
+.nav-item.active {
+    background:  var(--surface-ground);
+    color:       var(--text-color);
+    font-weight: 600;
+}
+

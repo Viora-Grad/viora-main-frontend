@@ -1,0 +1,111 @@
+<form [formGroup]="profileForm" (ngSubmit)="onContinue()" class="space-y-5">
+	<!-- Name Row -->
+	<div class="grid grid-cols-2 gap-4">
+		<!-- First Name -->
+		<div class="space-y-1.5">
+			<label
+				class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+				for="register-first-name"
+				>FIRST NAME</label
+			>
+			<input
+				id="register-first-name"
+				type="text"
+				pInputText
+				formControlName="firstName"
+				placeholder="E.g. Julian"
+				class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
+			/>
+			@if (firstNameControl.touched && firstNameControl.invalid) {
+				<p class="text-[12px] text-red-500 font-medium mt-1">First name is required.</p>
+			}
+		</div>
+
+		<!-- Last Name -->
+		<div class="space-y-1.5">
+			<label
+				class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+				for="register-last-name"
+				>LAST NAME</label
+			>
+			<input
+				id="register-last-name"
+				type="text"
+				pInputText
+				formControlName="lastName"
+				placeholder="E.g. Thorne"
+				class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
+			/>
+			@if (lastNameControl.touched && lastNameControl.invalid) {
+				<p class="text-[12px] text-red-500 font-medium mt-1">Last name is required.</p>
+			}
+		</div>
+	</div>
+
+	<!-- Date of Birth -->
+	<div class="space-y-1.5">
+		<label class="block text-[11px] font-extrabold text-gray-600 tracking-wider" for="register-dob"
+			>DATE OF BIRTH</label
+		>
+		<p-datePicker
+			id="register-dob"
+			formControlName="dateOfBirth"
+			dateFormat="dd/mm/yy"
+			[showIcon]="true"
+			[showOnFocus]="false"
+			[maxDate]="maxDate"
+			placeholder="dd/mm/yyyy"
+			class="w-full"
+			inputStyleClass="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
+		/>
+		@if (dateOfBirthControl.touched && dateOfBirthControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">
+				@if (dateOfBirthControl.errors?.['required']) {
+					Date of birth is required.
+				} @else if (dateOfBirthControl.errors?.['minimumAge']) {
+					You must be at least {{ dateOfBirthControl.errors?.['minimumAge'].requiredAge }} years
+					old.
+				}
+			</p>
+		}
+	</div>
+
+	<!-- Gender -->
+	<div class="space-y-1.5">
+		<label
+			class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+			for="register-gender"
+			>GENDER</label
+		>
+		<p-select
+			id="register-gender"
+			formControlName="gender"
+			[options]="genderOptions"
+			optionLabel="label"
+			optionValue="value"
+			placeholder="Select gender"
+			styleClass="w-full"
+			panelStyleClass="rounded-xl"
+		/>
+		@if (genderControl.touched && genderControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">Please select a gender.</p>
+		}
+	</div>
+
+	<!-- Next Button -->
+	<p-button
+		type="submit"
+		[size]="'large'"
+		[rounded]="false"
+		[raised]="true"
+		styleClass="w-full !bg-[#201335] !border-[#201335] hover:!bg-[#2d1a4a] !rounded-xl !py-3.5 mt-3"
+	>
+		@if (registerStore.isGoogleSignup()) {
+			<span class="font-semibold text-[15px]">Create Account</span>
+			<i class="pi pi-arrow-right ml-2 text-sm font-bold"></i>
+		} @else {
+			<span class="font-semibold text-[15px]">Next: Account Security</span>
+			<i class="pi pi-arrow-right ml-2 text-sm font-bold"></i>
+		}
+	</p-button>
+</form>

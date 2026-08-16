@@ -1,0 +1,17 @@
+:host {
+	display: block;
+	width: 100%;
+}
+
+:host ::ng-deep .plans-card.p-card {
+	border: 1px solid rgb(229 231 235);
+	border-radius: 1rem;
+	border-top: 3px solid rgb(34 25 68);
+	box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+	transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+:host ::ng-deep .plans-card.p-card:hover {
+	box-shadow: 0 8px 24px rgb(34 25 68 / 0.12);
+	transform: translateY(-2px);
+}

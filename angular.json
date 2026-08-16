@@ -44,7 +44,7 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular/build:application",
+					"builder": "@ngx-env/builder:application",
 					"options": {
 						"browser": "src/main.ts",
 						"tsConfig": "tsconfig.app.json",
@@ -70,7 +70,7 @@
 									"maximumError": "8kB"
 								}
 							],
-							"outputHashing": "all"
+						"outputHashing": "all"
 						},
 						"development": {
 							"optimization": false,
@@ -80,18 +80,18 @@
 					},
 					"defaultConfiguration": "production"
 				},
-				"serve": {
-					"builder": "@angular/build:dev-server",
-					"configurations": {
-						"production": {
-							"buildTarget": "viora-main-frontend:build:production"
-						},
-						"development": {
-							"buildTarget": "viora-main-frontend:build:development"
-						}
+			"serve": {
+				"builder": "@ngx-env/builder:dev-server",
+				"configurations": {
+					"production": {
+						"buildTarget": "viora-main-frontend:build:production"
 					},
-					"defaultConfiguration": "development"
+					"development": {
+						"buildTarget": "viora-main-frontend:build:development"
+					}
 				},
+				"defaultConfiguration": "development"
+			},
 				"test": {
 					"builder": "@angular/build:unit-test"
 				},

@@ -1,0 +1,96 @@
+<form [formGroup]="organizationForm" (ngSubmit)="onContinue()" class="space-y-5">
+	<!-- Header -->
+	<div class="mb-8">
+		<h2 class="text-[28px] font-extrabold text-[#201335] tracking-tight mb-2">Organization Info</h2>
+		<p class="text-[15px] text-gray-500 font-medium leading-relaxed">
+			Tell us about your organization to get started.
+		</p>
+	</div>
+
+	<!-- Country -->
+	<div class="space-y-1.5">
+		<label
+			class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+			for="onboarding-country"
+			>COUNTRY</label
+		>
+		<p-select
+			id="onboarding-country"
+			formControlName="countryId"
+			[options]="countries()"
+			optionLabel="isoAlphaThree"
+			optionValue="id"
+			placeholder="Select country"
+			styleClass="w-full"
+			panelStyleClass="rounded-xl"
+		/>
+		@if (countryControl.touched && countryControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">Please select a country.</p>
+		}
+	</div>
+
+	<!-- Proposed Name -->
+	<div class="space-y-1.5">
+		<label
+			class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+			for="onboarding-proposed-name"
+			>PROPOSED NAME</label
+		>
+		<div class="relative">
+			<input
+				id="onboarding-proposed-name"
+				type="text"
+				pInputText
+				formControlName="proposedName"
+				placeholder="e.g. Viora Health Clinic"
+				class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all"
+			/>
+			@if (isCheckingName()) {
+				<i class="pi pi-spin pi-spinner absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+			} @else if (proposedNameControl.valid && proposedNameControl.touched && proposedNameControl.value) {
+				<i class="pi pi-check absolute right-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold"></i>
+			}
+		</div>
+		@if (proposedNameControl.touched && proposedNameControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">
+				@if (proposedNameControl.errors?.['required']) {
+					Proposed name is required.
+				} @else if (proposedNameControl.errors?.['nameExists']) {
+					This organization name is already taken.
+				}
+			</p>
+		}
+	</div>
+
+	<!-- About -->
+	<div class="space-y-1.5">
+		<label
+			class="block text-[11px] font-extrabold text-gray-600 tracking-wider"
+			for="onboarding-about"
+			>ABOUT</label
+		>
+		<textarea
+			id="onboarding-about"
+			pTextarea
+			formControlName="about"
+			placeholder="Brief description of your organization"
+			rows="4"
+			class="w-full bg-[#FCF8FB] border border-transparent focus:border-purple-200 focus:bg-white focus:ring-2 focus:ring-purple-100 placeholder:text-gray-300 rounded-xl py-3.5 px-4 text-[15px] text-gray-700 font-medium outline-none transition-all resize-none"
+		></textarea>
+		@if (aboutControl.touched && aboutControl.invalid) {
+			<p class="text-[12px] text-red-500 font-medium mt-1">About is required.</p>
+		}
+	</div>
+
+	<!-- Continue Button -->
+	<p-button
+		type="submit"
+		[size]="'large'"
+		[rounded]="false"
+		[raised]="true"
+		styleClass="w-full !bg-[#201335] !border-[#201335] hover:!bg-[#2d1a4a] !rounded-xl !py-3.5 mt-3"
+	>
+		<span class="font-semibold text-[15px]">Next: Services</span>
+		<i class="pi pi-arrow-right ml-2 text-sm font-bold"></i>
+	</p-button>
+</form>
